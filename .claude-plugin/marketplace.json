@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "pancake-workflow",
-      "source": "./",
+      "source": "./claude-code",
       "description": "Pancake CMO workspace MCP connection + product-operation skill for Claude Code."
     }
   ]
