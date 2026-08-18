@@ -2,6 +2,9 @@
 
 Installable packages that connect a coding agent to your Pancake CMO workspace's MCP server —
 reading the GTM Brain, leads, signals, and SEO plan, and starting lead-finding runs.
+Authentication is a **browser sign-in** (OAuth): your tool opens Pancake's login, you pick the
+workspace to connect, and you're done — there is no API key to copy, and nothing in these
+packages is secret.
 
 - **`pancake-cmo-brain`** — the operating conventions for the tools: ground work in the brain
   first, respect the voice's banned claims, patch semantics on every write, revisions as
@@ -27,7 +30,7 @@ wrong or out of date, contact Pancake support or your workspace admin.
 
 ## Authenticate
 
-Get your workspace's MCP API key from **Settings → MCP** inside the Pancake app (each key is
-workspace-scoped and carries the access of the member who created it). Set it as
-`PANCAKE_MCP_API_KEY` in your shell — never commit it or paste it into a prompt. Full steps are in
-each package's README.
+No setup needed: the first time your tool connects it opens a browser window on
+`beta.getpancake.ai` where you sign in the usual way (Google or email link) and pick the
+workspace this tool may access. Manage or disconnect standing connections anytime in
+**Settings → MCP → Connected clients**.

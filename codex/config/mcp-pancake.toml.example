@@ -2,12 +2,9 @@
 # for the recommended `codex plugin marketplace add` / `codex plugin add` install path, which
 # needs no manual config.toml editing).
 #
-# Append this block to ~/.codex/config.toml (or a trusted project's .codex/config.toml).
-# Do NOT put your real API key in a tracked file — export PANCAKE_MCP_API_KEY in your shell first.
-#
-# Confirmed against `codex mcp add pancake --url "..." --bearer-token-env-var PANCAKE_MCP_API_KEY`
-# (codex-cli 0.147.0), which writes exactly this shape.
+# Append this block to ~/.codex/config.toml (or a trusted project's .codex/config.toml), then
+# run `codex mcp login pancake` — authentication is a browser sign-in to your Pancake account
+# (OAuth), so there is NO key, token, or env var to configure. Nothing in this file is secret.
 
 [mcp_servers.pancake]
 url = "https://beta.getpancake.ai/api/mcp"
-bearer_token_env_var = "PANCAKE_MCP_API_KEY"

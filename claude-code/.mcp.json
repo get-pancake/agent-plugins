@@ -2,11 +2,7 @@
   "mcpServers": {
     "pancake": {
       "type": "http",
-      "url": "https://beta.getpancake.ai/api/mcp",
-      "headers": {
-        "Authorization": "Bearer ${PANCAKE_MCP_API_KEY}"
-      },
-      "bearer_token_env_var": "PANCAKE_MCP_API_KEY"
+      "url": "https://beta.getpancake.ai/api/mcp"
     }
   }
 }
