@@ -1,6 +1,6 @@
 ---
 name: pancake-cmo-brain
-description: Use Pancake CMO over MCP: ground work in the GTM brain, read leads and SEO plans, manage signals and feedback, and run paid lead finding when asked.
+description: Use Pancake CMO over MCP: ground work in the GTM brain, read leads, SEO plans, and lead-finding runs, and manage signals and feedback.
 ---
 
 # Pancake CMO
@@ -82,16 +82,11 @@ their execution-aware status. Use `seo_get_article` with a publication id for it
 revision pointers, active appointment, and current status. These tools are planning reads: they do
 not draft, approve, schedule, or publish content.
 
-## Paid lead-finding runs
+## Lead-finding runs (read-only)
 
-The three start tools call paid providers:
-
-- `lead_finding_start_run` finds people engaging with relevant posts.
-- `lead_finding_start_company_run` finds ICP-fitting companies with hiring or technology signals.
-- `lead_finding_start_persona_sweep` searches directly from buyer titles and firmographics.
-
-Start one only when the user asks and after confirming the budget and inputs. A start returns a
-`runId` immediately. Poll `lead_finding_get_run` with that id about once a minute until it is
-`published` or `failed`; pending and running are normal. Use `lead_finding_list_runs` to recover
-an id or review recent status. Never start a duplicate merely because results are not ready yet.
+Runs are started by Pancake's own scheduler — this surface cannot start one. Use
+`lead_finding_list_runs` to review recent runs and their durable status, and
+`lead_finding_get_run` with a run id for its counts, spend and drop ledgers, and a bounded page
+of the people it found. While a run is `pending` or `running` there are no results yet — that is
+normal; it always reaches `published` or `failed`.
 
