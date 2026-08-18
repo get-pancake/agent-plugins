@@ -3,18 +3,21 @@
 Installable packages that connect a coding agent to your Pancake CMO workspace's MCP server —
 reading the GTM Brain, leads, signals, and SEO plan, and starting lead-finding runs.
 
-- [`shared/pancake-cmo-brain/SKILL.md`](shared/pancake-cmo-brain/SKILL.md) — the operating
-  conventions for the tools: ground work in the brain first, respect the voice's banned claims,
-  patch semantics on every write, revisions as concurrency tokens, and when a lead-finding run
-  spends real money. It's the same skill you can download directly from **Settings → MCP** inside
-  the Pancake app.
+- **`pancake-cmo-brain`** — the operating conventions for the tools: ground work in the brain
+  first, respect the voice's banned claims, patch semantics on every write, revisions as
+  concurrency tokens, and when a lead-finding run spends real money. It's the same skill you can
+  download directly from **Settings → MCP** inside the Pancake app, generated identically into
+  both `claude-code/skills/pancake-cmo-brain/SKILL.md` and `codex/skills/pancake-cmo-brain/SKILL.md`
+  (real files, not symlinks — a symlinked skill silently installs empty under Codex's plugin
+  cache).
 - [`claude-code/`](claude-code/README.md) — an installable Claude Code plugin (this repo's own
   `.claude-plugin/marketplace.json` at the root points at it; `claude-code/.claude-plugin/plugin.json`
-  + `claude-code/.mcp.json` describe the plugin itself).
-- [`codex/`](codex/README.md) — a Codex CLI package (skill + MCP config example). There is no
-  self-serve public Codex plugin marketplace yet, so this documents "install from this repo," and
-  one config detail (the exact remote-MCP auth-header key) needs verifying against your installed
-  Codex version.
+  and `claude-code/.mcp.json` describe the plugin itself).
+- [`codex/`](codex/README.md) — **the same `claude-code/` plugin also installs directly into
+  Codex CLI** via `codex plugin marketplace add` / `codex plugin add` (verified against
+  codex-cli 0.147.0) — no separate Codex-specific package is needed for that path.
+  `codex/README.md` documents that verified flow plus a manual fallback for older Codex
+  versions without plugin-marketplace support.
 
 ## This repo is a mirror, not the source
 

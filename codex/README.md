@@ -1,24 +1,38 @@
-# Pancake workflow — Codex package
+# Pancake workflow — Codex
 
 Gives Codex CLI the same Pancake CMO workspace access as the Claude Code plugin: the
-[`pancake-cmo-brain`](../shared/pancake-cmo-brain/SKILL.md) skill — the same skill a member can
-already download from **Settings → MCP** in the app, symlinked here (not copied) and generated, not
-hand-written; see [`../README.md`](../README.md) — plus the workspace-scoped,
-API-key-authenticated MCP server.
+[`pancake-cmo-brain`](skills/pancake-cmo-brain/SKILL.md) skill — the same skill a member can
+already download from **Settings → MCP** in the app, generated (not hand-written) here — plus
+the workspace-scoped, API-key-authenticated MCP server.
 
-> **Status:** this package installs a real `SKILL.md` and documents a real MCP server, both
-> confirmed against current Codex docs (`SKILL.md` support, `~/.codex/config.toml` MCP
-> registration). What is **not yet confirmed** is the exact `config.toml` key for custom auth
-> headers on a *remote* (Streamable HTTP) MCP server — see the note in
-> [`config/mcp-pancake.toml.example`](config/mcp-pancake.toml.example). Verify and update that file
-> against your installed Codex version before treating this as production-ready. There is no
-> self-serve public Codex plugin marketplace to publish to yet, so distribution today is "install
-> from this repo," same as the Claude Code plugin.
+## Install (recommended — verified against codex-cli 0.147.0)
 
-## Install
+Codex CLI reads the **same** `../claude-code/` plugin directory directly, via this repo's own
+`.claude-plugin/marketplace.json`. No separate Codex-specific package is needed for this path:
 
-1. Clone this repo (or download just this `codex/` directory), then copy or symlink the skill into
-   Codex's skill directory:
+```bash
+codex plugin marketplace add get-pancake/pancake-agent-plugins
+codex plugin add pancake-workflow@pancake-cmo
+codex mcp list   # expect: pancake  https://.../api/mcp  <your env var>  enabled  Bearer token
+```
+
+If `codex mcp list` shows `Auth: Unsupported` instead of `Bearer token`, your Codex version reads
+a different `.mcp.json` field than `bearer_token_env_var` — check `codex mcp add --help` for the
+current flag name and update `../claude-code/.mcp.json` to match (it already carries both that
+field and Claude Code's `headers` field side by side; unrecognized fields are ignored by each
+client, which is how one file serves both).
+
+`this/skills/pancake-cmo-brain/` exists as a **real file**, not a symlink to a shared location —
+Codex's plugin-install cache step silently drops a symlink that points outside its plugin root,
+so a shared symlink installs an empty `skills/` directory even though it looks fine in the
+marketplace source tree.
+
+## Install (fallback — no plugin-marketplace support)
+
+If your Codex version predates `codex plugin`, install manually instead:
+
+1. Clone this repo (or download just this `codex/` directory), then copy or symlink the skill
+   into Codex's skill directory:
 
    ```bash
    git clone https://github.com/get-pancake/pancake-agent-plugins
@@ -27,8 +41,9 @@ API-key-authenticated MCP server.
    ```
 
 2. Register the MCP server — append
-   [`config/mcp-pancake.toml.example`](config/mcp-pancake.toml.example) (with the header syntax
-   verified for your Codex version) to `~/.codex/config.toml`.
+   [`config/mcp-pancake.toml.example`](config/mcp-pancake.toml.example) to `~/.codex/config.toml`.
+   It uses `--bearer-token-env-var`-equivalent `bearer_token_env_var` syntax, confirmed against
+   codex-cli 0.147.0's `codex mcp add --help`.
 
 ## Authenticate
 
@@ -38,12 +53,16 @@ prompt.
 
 ## Verify the install
 
-Run `/mcp` in Codex CLI and confirm the `pancake` server is listed as connected, then run the
-Claude Code package's [`smoke-test.md`](../claude-code/smoke-test.md) steps (same MCP server, same
-skill — only the client differs): one `brain_get` read, then one low-risk write (add + remove a
-watched keyword).
+Run the Claude Code package's [`smoke-test.md`](../claude-code/smoke-test.md) steps (same MCP
+server, same skill — only the client differs): one `brain_get` read, then one low-risk write
+(add + remove a watched keyword).
 
 ## Uninstall
 
-Remove the symlink from `~/.codex/skills/` and delete the `[mcp_servers.pancake]` block from
-`~/.codex/config.toml`. Revoke the key in Settings → MCP if you no longer want it valid.
+Marketplace install: `codex plugin remove pancake-workflow@pancake-cmo` then
+`codex plugin marketplace remove pancake-cmo` then `codex mcp remove pancake`.
+
+Manual fallback install: remove the symlink from `~/.codex/skills/` and delete the
+`[mcp_servers.pancake]` block from `~/.codex/config.toml`.
+
+Either way, revoke the key in Settings → MCP if you no longer want it valid.

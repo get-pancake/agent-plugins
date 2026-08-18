@@ -1,17 +1,13 @@
-# Pancake CMO MCP server — Codex CLI config
+# Pancake CMO MCP server — Codex CLI config (manual-install fallback only; see ../README.md
+# for the recommended `codex plugin marketplace add` / `codex plugin add` install path, which
+# needs no manual config.toml editing).
 #
 # Append this block to ~/.codex/config.toml (or a trusted project's .codex/config.toml).
-# Do NOT put your real API key in a tracked file: export PANCAKE_MCP_API_KEY in your shell and
-# reference it, or use whatever secret-substitution mechanism your Codex version supports.
+# Do NOT put your real API key in a tracked file — export PANCAKE_MCP_API_KEY in your shell first.
 #
-# NOTE: the stdio `[mcp_servers.name]` + command/args/env form below is confirmed against current
-# Codex docs. Codex also supports remote Streamable HTTP MCP servers (which is what Pancake's
-# server is), but this package has not yet been live-verified against Codex's exact remote-HTTP
-# config keys for custom auth headers — check `codex mcp --help` / developers.openai.com/codex/mcp
-# for your installed version before relying on this in production, and update this file once
-# confirmed (tracked in PAN-137).
+# Confirmed against `codex mcp add pancake --url "..." --bearer-token-env-var PANCAKE_MCP_API_KEY`
+# (codex-cli 0.147.0), which writes exactly this shape.
 
 [mcp_servers.pancake]
 url = "https://beta.getpancake.ai/api/mcp"
-# Confirm the exact key name for custom headers on remote MCP servers for your Codex version.
-http_headers = { "Authorization" = "Bearer ${PANCAKE_MCP_API_KEY}" }
+bearer_token_env_var = "PANCAKE_MCP_API_KEY"

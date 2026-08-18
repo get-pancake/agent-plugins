@@ -3,9 +3,12 @@
 Gives Claude Code direct, workspace-scoped access to a Pancake CMO account: reading the GTM Brain,
 leads, signals, and SEO plan, and starting lead-finding runs, through Pancake's MCP server
 (the workspace-scoped, API-key-authenticated MCP server), plus the operating conventions in
-[`pancake-cmo-brain`](../shared/pancake-cmo-brain/SKILL.md) — the same skill a member can already
-download from **Settings → MCP** in the app, symlinked here (not copied) and generated, not
-hand-written; see [`../README.md`](../README.md).
+[`pancake-cmo-brain`](skills/pancake-cmo-brain/SKILL.md) — the same skill a member can already
+download from **Settings → MCP** in the app, generated (not hand-written) here; see
+[`../README.md`](../README.md).
+
+This same plugin directory also installs directly into **Codex CLI** — see
+[`../codex/README.md`](../codex/README.md).
 
 ## Install
 
