@@ -21,7 +21,7 @@ API-key-authenticated MCP server.
    Codex's skill directory:
 
    ```bash
-   git clone https://github.com/basalt-ai/pancake-agent-plugins
+   git clone https://github.com/get-pancake/pancake-agent-plugins
    mkdir -p ~/.codex/skills
    ln -s "$(pwd)/pancake-agent-plugins/codex/skills/pancake-cmo-brain" ~/.codex/skills/pancake-cmo-brain
    ```

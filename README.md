@@ -8,8 +8,9 @@ reading the GTM Brain, leads, signals, and SEO plan, and starting lead-finding r
   patch semantics on every write, revisions as concurrency tokens, and when a lead-finding run
   spends real money. It's the same skill you can download directly from **Settings → MCP** inside
   the Pancake app.
-- [`claude-code/`](claude-code/README.md) — an installable Claude Code plugin
-  (`.claude-plugin/plugin.json` + `marketplace.json` + `.mcp.json`).
+- [`claude-code/`](claude-code/README.md) — an installable Claude Code plugin (this repo's own
+  `.claude-plugin/marketplace.json` at the root points at it; `claude-code/.claude-plugin/plugin.json`
+  + `claude-code/.mcp.json` describe the plugin itself).
 - [`codex/`](codex/README.md) — a Codex CLI package (skill + MCP config example). There is no
   self-serve public Codex plugin marketplace yet, so this documents "install from this repo," and
   one config detail (the exact remote-MCP auth-header key) needs verifying against your installed

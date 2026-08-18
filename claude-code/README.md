@@ -10,7 +10,7 @@ hand-written; see [`../README.md`](../README.md).
 ## Install
 
 ```bash
-claude plugin marketplace add basalt-ai/pancake-agent-plugins
+claude plugin marketplace add get-pancake/pancake-agent-plugins
 claude plugin install pancake-workflow@pancake-cmo   # bundles the pancake-cmo-brain skill
 ```
 
