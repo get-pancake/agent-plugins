@@ -1,0 +1,9 @@
+{
+  "name": "pancake-workflow",
+  "description": "Connect Claude Code to a Pancake CMO workspace's MCP server and follow Pancake's supported product-operation conventions.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Pancake",
+    "url": "https://getpancake.ai"
+  }
+}

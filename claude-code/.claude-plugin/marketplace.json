@@ -1,0 +1,14 @@
+{
+  "name": "pancake-cmo",
+  "owner": {
+    "name": "Pancake",
+    "url": "https://getpancake.ai"
+  },
+  "plugins": [
+    {
+      "name": "pancake-workflow",
+      "source": "./",
+      "description": "Pancake CMO workspace MCP connection + product-operation skill for Claude Code."
+    }
+  ]
+}
