@@ -10,7 +10,8 @@ packages is secret.
   first, respect the voice's banned claims, patch semantics on every write, revisions as
   concurrency tokens, and when a lead-finding run spends real money. It's the same skill you can
   download directly from **Settings → MCP** inside the Pancake app, generated identically into
-  both `claude-code/skills/pancake-cmo-brain/SKILL.md` and `codex/skills/pancake-cmo-brain/SKILL.md`
+  `claude-code/skills/pancake-cmo-brain/SKILL.md`, `codex/skills/pancake-cmo-brain/SKILL.md`,
+  and `droid/skills/pancake-cmo-brain/SKILL.md`
   (real files, not symlinks — a symlinked skill silently installs empty under Codex's plugin
   cache).
 - [`claude-code/`](claude-code/README.md) — an installable Claude Code plugin (this repo's own
@@ -21,6 +22,14 @@ packages is secret.
   codex-cli 0.147.0) — no separate Codex-specific package is needed for that path.
   `codex/README.md` documents that verified flow plus a manual fallback for older Codex
   versions without plugin-marketplace support.
+- [`droid/`](droid/README.md) — Factory Droid CLI, as a manual two-step install (Droid has no
+  plugin marketplace): register the MCP server (`droid mcp add` or `.factory/mcp.json`), then
+  copy the skill into a `.factory/skills/` directory. Droid supports Pancake's
+  client-ID-metadata-document OAuth flow natively.
+
+Gemini CLI and opencode are deliberately absent: both still register OAuth clients dynamically
+(DCR), which Pancake's sign-in does not implement — packages land once they support client ID
+metadata documents (CIMD).
 
 ## This repo is a mirror, not the source
 

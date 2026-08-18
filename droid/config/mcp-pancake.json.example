@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "pancake": {
+      "type": "http",
+      "url": "https://beta.getpancake.ai/api/mcp"
+    }
+  }
+}
