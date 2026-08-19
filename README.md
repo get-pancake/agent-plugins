@@ -27,9 +27,13 @@ packages is secret.
   copy the skill into a `.factory/skills/` directory. Droid supports Pancake's
   client-ID-metadata-document OAuth flow natively.
 
-Gemini CLI and opencode are deliberately absent: both still register OAuth clients dynamically
-(DCR), which Pancake's sign-in does not implement — packages land once they support client ID
-metadata documents (CIMD).
+CLIs that support the OAuth flow but ship no client metadata document of their own (Gemini CLI,
+Amp, Mastra Code, Pi, Mistral Vibe, fx) can use Pancake's hosted client id instead — set their
+static OAuth client id / `client_metadata_url` to
+`https://beta.getpancake.ai/.well-known/mcp-clients/pancake-cli.json`; the in-app
+**Settings → MCP** guide carries per-tool snippets. opencode, GitHub Copilot CLI, Kimi Code, and
+goose remain absent: they only register OAuth clients dynamically (DCR), which Pancake's sign-in
+does not implement — they land once their upstream client-ID-metadata (CIMD) support ships.
 
 ## This repo is a mirror, not the source
 
