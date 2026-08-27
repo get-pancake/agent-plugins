@@ -12,7 +12,7 @@ Droid has no plugin marketplace, so this is a two-step manual install.
 **1. Register the MCP server** — either run:
 
 ```bash
-droid mcp add pancake https://beta.getpancake.ai/api/mcp --type http
+droid mcp add pancake https://app.getpancake.ai/api/mcp --type http
 ```
 
 or append the contents of [`config/mcp-pancake.json.example`](config/mcp-pancake.json.example)

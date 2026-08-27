@@ -31,3 +31,6 @@ Then disconnect the grant in the Pancake app: Settings → MCP → Connected cli
 Last run: 2026-08-19 — the browser OAuth flow (ADR 0055) verified end to end against
 beta.getpancake.ai with a real Claude Code client: challenge → discovery → consent → tokens →
 `ping`/tools succeed; grant visible and revocable in Settings.
+
+Repeat the full flow against `app.getpancake.ai` after the domain cutover; the beta result is not
+evidence that the canonical-host OAuth and provider registrations work.

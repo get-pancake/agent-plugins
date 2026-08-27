@@ -30,7 +30,7 @@ packages is secret.
 CLIs that support the OAuth flow but ship no client metadata document of their own (Gemini CLI,
 Amp, Mastra Code, Pi, Mistral Vibe, fx) can use Pancake's hosted client id instead — set their
 static OAuth client id / `client_metadata_url` to
-`https://beta.getpancake.ai/.well-known/mcp-clients/pancake-cli.json`; the in-app
+`https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json`; the in-app
 **Settings → MCP** guide carries per-tool snippets. opencode, GitHub Copilot CLI, Kimi Code, and
 goose remain absent: they only register OAuth clients dynamically (DCR), which Pancake's sign-in
 does not implement — they land once their upstream client-ID-metadata (CIMD) support ships.
@@ -44,6 +44,6 @@ wrong or out of date, contact Pancake support or your workspace admin.
 ## Authenticate
 
 No setup needed: the first time your tool connects it opens a browser window on
-`beta.getpancake.ai` where you sign in the usual way (Google or email link) and pick the
+`app.getpancake.ai` where you sign in the usual way (Google or email link) and pick the
 workspace this tool may access. Manage or disconnect standing connections anytime in
 **Settings → MCP → Connected clients**.

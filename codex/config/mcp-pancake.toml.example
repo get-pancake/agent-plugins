@@ -7,4 +7,4 @@
 # (OAuth), so there is NO key, token, or env var to configure. Nothing in this file is secret.
 
 [mcp_servers.pancake]
-url = "https://beta.getpancake.ai/api/mcp"
+url = "https://app.getpancake.ai/api/mcp"
