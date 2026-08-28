@@ -1,9 +1,16 @@
 {
   "name": "pancake-workflow",
-  "description": "Connect Claude Code to a Pancake CMO workspace's MCP server and follow Pancake's supported product-operation conventions.",
-  "version": "0.1.0",
+  "displayName": "Pancake CMO",
+  "description": "Connect Claude Code and Cowork to a Pancake CMO workspace's GTM Brain, leads, signals, SEO plan, and run history.",
+  "version": "0.2.0",
   "author": {
     "name": "Pancake",
+    "email": "hey@pancake.ai",
     "url": "https://getpancake.ai"
-  }
+  },
+  "homepage": "https://getpancake.ai",
+  "repository": "https://github.com/get-pancake/pancake-agent-plugins",
+  "keywords": ["marketing", "go-to-market", "leads", "seo", "pancake"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
 }

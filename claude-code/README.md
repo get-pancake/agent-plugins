@@ -1,7 +1,7 @@
 # Pancake workflow — Claude Code plugin
 
 Gives Claude Code direct, workspace-scoped access to a Pancake CMO account: reading the GTM Brain,
-leads, signals, and SEO plan, and starting lead-finding runs, through Pancake's MCP server, plus
+leads, signals, SEO plan, and lead-finding run history through Pancake's MCP server, plus
 the operating conventions in [`pancake-cmo-brain`](skills/pancake-cmo-brain/SKILL.md) — the same
 skill a member can already download from **Settings → MCP** in the app, generated (not
 hand-written) here; see [`../README.md`](../README.md).

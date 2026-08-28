@@ -1,6 +1,6 @@
 ---
 name: pancake-cmo-brain
-description: Use Pancake CMO over MCP: ground work in the GTM brain, read leads, SEO plans, and lead-finding runs, and manage signals and feedback.
+description: "Use Pancake CMO over MCP: ground work in the GTM brain, read leads, SEO plans, and lead-finding runs, and manage signals and feedback."
 ---
 
 # Pancake CMO
@@ -89,4 +89,3 @@ Runs are started by Pancake's own scheduler — this surface cannot start one. U
 `lead_finding_get_run` with a run id for its counts, spend and drop ledgers, and a bounded page
 of the people it found. While a run is `pending` or `running` there are no results yet — that is
 normal; it always reaches `published` or `failed`.
-

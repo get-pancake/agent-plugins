@@ -8,7 +8,7 @@
     {
       "name": "pancake-workflow",
       "source": "./claude-code",
-      "description": "Pancake CMO workspace MCP connection + product-operation skill for Claude Code."
+      "description": "Pancake CMO workspace MCP connection and GTM operating skill for Claude Code and Cowork."
     }
   ]
 }

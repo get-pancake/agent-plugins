@@ -1,0 +1,34 @@
+{
+  "name": "pancake-cmo",
+  "version": "0.1.0",
+  "description": "Connect ChatGPT and Codex to a Pancake CMO workspace, with its GTM Brain, leads, signals, SEO plan, and run history.",
+  "author": {
+    "name": "Pancake",
+    "email": "hey@pancake.ai",
+    "url": "https://getpancake.ai"
+  },
+  "homepage": "https://getpancake.ai",
+  "repository": "https://github.com/get-pancake/pancake-agent-plugins",
+  "keywords": ["marketing", "go-to-market", "leads", "seo", "pancake"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Pancake CMO",
+    "shortDescription": "Bring your GTM Brain, leads, signals, and SEO plan into ChatGPT and Codex.",
+    "longDescription": "Connect your Pancake CMO workspace to ChatGPT and Codex. Ground marketing work in your approved GTM Brain, review qualified leads and lead-finding runs, inspect signal settings and the SEO publication plan, submit lead feedback, and make requested Brain or signal updates. Access is workspace-scoped and authorized through Pancake's browser OAuth flow.",
+    "developerName": "Pancake",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://getpancake.ai",
+    "privacyPolicyURL": "https://getpancake.ai/privacy",
+    "termsOfServiceURL": "https://getpancake.ai/terms",
+    "defaultPrompt": [
+      "Use my Pancake Brain to draft on-brand LinkedIn copy.",
+      "Show me the newest qualified leads in Pancake.",
+      "Review my upcoming SEO publication plan."
+    ],
+    "brandColor": "#2C002A",
+    "composerIcon": "./assets/pancake.svg",
+    "logo": "./assets/pancake.svg"
+  }
+}

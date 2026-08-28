@@ -1,25 +1,31 @@
 # Pancake agent plugins
 
 Installable packages that connect a coding agent to your Pancake CMO workspace's MCP server —
-reading the GTM Brain, leads, signals, and SEO plan, and starting lead-finding runs.
+reading the GTM Brain, leads, signals, SEO plan, and lead-finding run history.
 Authentication is a **browser sign-in** (OAuth): your tool opens Pancake's login, you pick the
 workspace to connect, and you're done — there is no API key to copy, and nothing in these
 packages is secret.
 
 - **`pancake-cmo-brain`** — the operating conventions for the tools: ground work in the brain
   first, respect the voice's banned claims, patch semantics on every write, revisions as
-  concurrency tokens, and when a lead-finding run spends real money. It's the same skill you can
+  concurrency tokens, and the fact that lead-finding runs are read-only on this tenant surface.
+  It's the same skill you can
   download directly from **Settings → MCP** inside the Pancake app, generated identically into
-  `claude-code/skills/pancake-cmo-brain/SKILL.md`, `codex/skills/pancake-cmo-brain/SKILL.md`,
-  and `droid/skills/pancake-cmo-brain/SKILL.md`
+  `claude-code/skills/pancake-cmo-brain/SKILL.md`,
+  `pancake-cmo/skills/pancake-cmo-brain/SKILL.md`,
+  `codex/skills/pancake-cmo-brain/SKILL.md`, and `droid/skills/pancake-cmo-brain/SKILL.md`
   (real files, not symlinks — a symlinked skill silently installs empty under Codex's plugin
   cache).
 - [`claude-code/`](claude-code/README.md) — an installable Claude Code plugin (this repo's own
   `.claude-plugin/marketplace.json` at the root points at it; `claude-code/.claude-plugin/plugin.json`
   and `claude-code/.mcp.json` describe the plugin itself).
+- [`pancake-cmo/`](pancake-cmo/README.md) — the universal OpenAI plugin package for the shared
+  ChatGPT and Codex directory, with its `.codex-plugin/plugin.json`, MCP connection, listing
+  metadata, brand asset, and generated skill.
 - [`codex/`](codex/README.md) — **the same `claude-code/` plugin also installs directly into
   Codex CLI** via `codex plugin marketplace add` / `codex plugin add` (verified against
-  codex-cli 0.147.0) — no separate Codex-specific package is needed for that path.
+  codex-cli 0.147.0). That remains the direct CLI path; `pancake-cmo/` is the public universal
+  directory package.
   `codex/README.md` documents that verified flow plus a manual fallback for older Codex
   versions without plugin-marketplace support.
 - [`droid/`](droid/README.md) — Factory Droid CLI, as a manual two-step install (Droid has no
