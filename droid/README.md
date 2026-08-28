@@ -1,6 +1,6 @@
-# Pancake CMO for Factory Droid
+# Pancake for Factory Droid
 
-Connects Factory's Droid CLI to your Pancake CMO workspace's MCP server, with the same
+Connects Factory's Droid CLI to your Pancake workspace's MCP server, with the same
 `pancake-cmo-brain` skill the other packages ship. Authentication is a browser sign-in
 (OAuth) — Droid supports Pancake's client-ID-metadata-document flow out of the box, so there
 is no key, token, or env var to configure and nothing in this package is secret.

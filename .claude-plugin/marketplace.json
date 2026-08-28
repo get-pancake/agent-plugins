@@ -1,5 +1,6 @@
 {
   "name": "pancake-cmo",
+  "description": "Official Pancake integrations for Claude Code and Cowork.",
   "owner": {
     "name": "Pancake",
     "url": "https://getpancake.ai"
@@ -8,7 +9,7 @@
     {
       "name": "pancake-workflow",
       "source": "./claude-code",
-      "description": "Pancake CMO workspace MCP connection and GTM operating skill for Claude Code and Cowork."
+      "description": "Pancake workspace MCP connection and GTM operating skill for Claude Code and Cowork."
     }
   ]
 }

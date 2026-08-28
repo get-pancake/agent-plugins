@@ -1,6 +1,6 @@
-# Pancake CMO — ChatGPT and Codex plugin
+# Pancake — ChatGPT and Codex plugin
 
-Connects ChatGPT and Codex to a Pancake CMO workspace through Pancake's hosted MCP server. The
+Connects ChatGPT and Codex to a Pancake workspace through Pancake's hosted MCP server. The
 plugin includes the `pancake-cmo-brain` skill so the agent reads the GTM Brain before creating
 marketing work, respects banned claims and revision tokens, and uses write tools only when asked.
 

@@ -1,9 +1,9 @@
 ---
 name: pancake-cmo-brain
-description: "Use Pancake CMO over MCP: ground work in the GTM brain, read leads, SEO plans, and lead-finding runs, and manage signals and feedback."
+description: "Use Pancake over MCP: ground work in the GTM brain, read leads, SEO plans, and lead-finding runs, and manage signals and feedback."
 ---
 
-# Pancake CMO
+# Pancake
 
 You have access to a Pancake workspace over MCP: its go-to-market brain, qualified leads, signal
 settings, SEO publication plan, and lead-finding runs.

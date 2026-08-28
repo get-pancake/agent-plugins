@@ -1,4 +1,4 @@
-# Pancake CMO MCP server — Codex CLI config (manual-install fallback only; see ../README.md
+# Pancake MCP server — Codex CLI config (manual-install fallback only; see ../README.md
 # for the recommended `codex plugin marketplace add` / `codex plugin add` install path, which
 # needs no manual config.toml editing).
 #

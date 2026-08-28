@@ -1,6 +1,6 @@
 # Pancake workflow — Codex
 
-Gives Codex CLI the same Pancake CMO workspace access as the Claude Code plugin: the
+Gives Codex CLI the same Pancake workspace access as the Claude Code plugin: the
 [`pancake-cmo-brain`](skills/pancake-cmo-brain/SKILL.md) skill — the same skill a member can
 already download from **Settings → MCP** in the app, generated (not hand-written) here — plus
 the workspace-scoped MCP server. Authentication is a browser sign-in (OAuth); there is no key
