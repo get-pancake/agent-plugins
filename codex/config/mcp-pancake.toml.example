@@ -5,6 +5,15 @@
 # Append this block to ~/.codex/config.toml (or a trusted project's .codex/config.toml), then
 # run `codex mcp login pancake` — authentication is a browser sign-in to your Pancake account
 # (OAuth), so there is NO key, token, or env var to configure. Nothing in this file is secret.
+#
+# The `oauth.client_id` below is Pancake's PUBLIC client-ID metadata document (a URL, not a
+# credential). Codex 0.148.0+ discovers a client id on its own and is unaffected by it; Codex
+# 0.147.0 and older have no such path and would otherwise fall back to dynamic client
+# registration, which Pancake's sign-in does not implement — this block is what makes
+# `codex mcp login pancake` work there.
 
 [mcp_servers.pancake]
 url = "https://app.getpancake.ai/api/mcp"
+
+[mcp_servers.pancake.oauth]
+client_id = "https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json"

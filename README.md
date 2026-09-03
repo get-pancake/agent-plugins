@@ -23,18 +23,20 @@ packages is secret.
   ChatGPT and Codex directory, with its `.codex-plugin/plugin.json`, MCP connection, listing
   metadata, brand asset, and generated skill.
 - [`codex/`](codex/README.md) — **the same `claude-code/` plugin also installs directly into
-  Codex CLI** via `codex plugin marketplace add` / `codex plugin add` (verified against
-  codex-cli 0.147.0). That remains the direct CLI path; `pancake-cmo/` is the public universal
-  directory package.
-  `codex/README.md` documents that verified flow plus a manual fallback for older Codex
-  versions without plugin-marketplace support.
+  Codex CLI** via `codex plugin marketplace add` / `codex plugin add`. The zero-config browser
+  sign-in needs Codex CLI **0.148.0 or newer** (the first release that discovers Pancake's
+  client-ID metadata document); 0.147.0 and older must register the server with the hosted
+  client id below, and `codex/README.md` documents both plus a manual fallback for Codex
+  versions without plugin-marketplace support. `pancake-cmo/` is the public universal directory
+  package.
 - [`droid/`](droid/README.md) — Factory Droid CLI, as a manual two-step install (Droid has no
   plugin marketplace): register the MCP server (`droid mcp add` or `.factory/mcp.json`), then
   copy the skill into a `.factory/skills/` directory. Droid supports Pancake's
   client-ID-metadata-document OAuth flow natively.
 
-CLIs that support the OAuth flow but ship no client metadata document of their own (Gemini CLI,
-Amp, Mastra Code, Pi, Mistral Vibe, fx) can use Pancake's hosted client id instead — set their
+CLIs that support the OAuth flow but ship no client metadata document of their own (Codex CLI
+≤ 0.147.0, Gemini CLI, Amp, Mastra Code, Pi, Mistral Vibe, fx) can use Pancake's hosted client id
+instead — set their
 static OAuth client id / `client_metadata_url` to
 `https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json`; the in-app
 **Settings → MCP** guide carries per-tool snippets. opencode, GitHub Copilot CLI, Kimi Code, and

@@ -6,7 +6,7 @@ already download from **Settings → MCP** in the app, generated (not hand-writt
 the workspace-scoped MCP server. Authentication is a browser sign-in (OAuth); there is no key
 or env var to configure.
 
-## Install (recommended — verified against codex-cli 0.147.0)
+## Install (recommended — Codex CLI 0.148.0 or newer)
 
 Codex CLI reads the **same** `../claude-code/` plugin directory directly, via this repo's own
 `.claude-plugin/marketplace.json`:
@@ -16,6 +16,19 @@ codex plugin marketplace add get-pancake/pancake-agent-plugins
 codex plugin add pancake-workflow@pancake-cmo
 codex mcp login pancake      # opens the browser sign-in + workspace picker
 codex mcp list               # expect: pancake … enabled, OAuth
+```
+
+Codex discovers its OAuth client id on its own from **0.148.0** (client-ID metadata documents,
+openai/codex#38089). On **0.147.0 or older**, `codex mcp login pancake` fails with
+`Dynamic client registration failed: Dynamic client registration not supported` — that version
+can only register clients dynamically, which Pancake's sign-in does not implement. Either upgrade
+Codex, or keep the plugin's skill and register the server with Pancake's public client id (a
+URL, not a credential) before logging in:
+
+```bash
+codex mcp add pancake --url https://app.getpancake.ai/api/mcp \
+  --oauth-client-id https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json
+codex mcp login pancake
 ```
 
 `this/skills/pancake-cmo-brain/` exists as a **real file**, not a symlink to a shared location —
@@ -37,8 +50,9 @@ If your Codex version predates `codex plugin`, install manually instead:
    ```
 
 2. Register the MCP server — append
-   [`config/mcp-pancake.toml.example`](config/mcp-pancake.toml.example) to `~/.codex/config.toml`,
-   then run `codex mcp login pancake` for the browser sign-in.
+   [`config/mcp-pancake.toml.example`](config/mcp-pancake.toml.example) to `~/.codex/config.toml`
+   (its `[mcp_servers.pancake.oauth]` block carries the public client id that Codex 0.147.0 and
+   older need), then run `codex mcp login pancake` for the browser sign-in.
 
 ## Verify the install
 
