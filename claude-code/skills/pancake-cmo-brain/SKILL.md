@@ -96,5 +96,21 @@ at once. Poll `lead_finding_get_run` every minute or two until status is `publis
 `failed` — `pending` and `running` both mean wait, never that something is stuck — and never
 start a second plan while one is in flight. `lead_finding_cancel_run` stops a run and keeps the
 leads it already found. `lead_finding_list_runs` reviews recent runs (a waterfall's stages share a
-`chainId`); `lead_finding_get_run` reads counts, spend and drop ledgers, and a bounded page of
-people.
+`chainId`) with each run's lead count, stop reason, credits charged, and origin;
+`lead_finding_get_run` reads counts, spend and drop ledgers, and a bounded page of people.
+
+Every `lead_finding_get_run` answer also carries a `report` written for you: `credits` (what the
+ledger charged the run and its waterfall hops — `null` when the ledger never saw it, never a
+made-up zero — plus the document's spend in credits and the chain envelope), `rejections` (counts
+per reason with a plain-language `meaning`, and up to ten named examples), `stopped` (why it
+ended: `budget`, `deadline`, `lead_limit`, `sources_dry`, `error`, or `cancelled`, and where
+that came from), `chain` (the waterfall's hops and the stage's decision), `origin`, and `advice`
+— deterministic next steps: a wall of hard vetoes means the sources are off (review signal
+settings, keywords, competitors); a wall of low ICP scores means the bar is high (review the ICP
+in the Brain or accept `needs_review` leads); enrichment or judge failures mean a provider issue
+(retry later); a budget stop says the spend per lead and what the remainder would cost; dry
+sources name the signal with the best recent feedback. An empty `advice` means the run met its
+target. Read `advice` before proposing another run. `include: 'decisions'` returns the run's
+per-candidate verdicts, vetoes, and drops from its trail (page with `afterSeq`; size with
+`decisionsLimit`, up to 200 — `limit` is the people page, up to 50) — also for a
+failed run, which has no result document.
