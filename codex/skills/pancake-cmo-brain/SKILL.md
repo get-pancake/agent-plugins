@@ -79,8 +79,12 @@ changing only `enabled` or `weight`.
 
 Use `seo_list_calendar` to read a bounded chronological page of publication appointments and
 their execution-aware status. Use `seo_get_article` with a publication id for its brief, content
-revision pointers, active appointment, and current status. These tools are planning reads: they do
-not draft, approve, schedule, or publish content.
+revision pointers, active appointment, and current status. Use `seo_get_article_content` with the
+same id to pull the article text itself: every immutable content revision with its full markdown
+`body`, title, excerpt, and SEO metadata, plus the approval history — `approvedContent` is the
+revision a member approved (null until one is), the text to publish through your own site build.
+These tools are planning and content reads: they do not draft, approve, schedule, or publish
+content.
 
 ## Lead-finding runs
 
