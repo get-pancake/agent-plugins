@@ -86,11 +86,14 @@ not draft, approve, schedule, or publish content.
 
 Pancake's scheduler runs the nightly waterfall on its own. This surface can also start work on
 demand, and the unit is CREDITS. Call `lead_finding_get_spend` first: it says how many credits the
-workspace's spend ceiling still allows today and this month, and how many agent-started runs remain
-allowed. Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
+workspace's spend ceiling still allows today and this month, how many agent-started runs remain
+allowed, and — under `connection` — this connection's own allowance and whether it (or every agent
+start, `agentStartsPaused`) is paused. In enforce mode, the smaller ceiling bounds a run;
+in shadow mode, these figures are observational. Members may lower allowances or pause/unpause;
+only operators may raise allowances. Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
 a scope — the full waterfall or one pipeline — or an explicit split) to see how the credits would
 be spread across post-engagement, company-signal, and persona-sweep, the leads each stage is
-expected to find, and what the ceiling would actually let through; it is free. Confirm the credits
+expected to find, and the runnable budget for the current enforcement mode; it is free. Confirm the credits
 with the user, then `lead_finding_start_plan` with the same arguments; it returns the head run id
 at once. Poll `lead_finding_get_run` every minute or two until status is `published` or
 `failed` — `pending` and `running` both mean wait, never that something is stuck — and never
@@ -114,6 +117,14 @@ target. Read `advice` before proposing another run. `include: 'decisions'` retur
 per-candidate verdicts, vetoes, and drops from its trail (page with `afterSeq`; size with
 `decisionsLimit`, up to 200 — `limit` is the people page, up to 50) — also for a
 failed run, which has no result document.
+
+## Credit rollout posture
+
+Spend and preview responses include `enforcementMode`. In `shadow`, credit usage is
+recorded and balances may go negative; workspace and connection ceilings do not reduce or refuse
+runs. Use the preview's `runnable` result, not the raw remaining ceiling, to decide the plan's
+budget. Explicit pauses and the normal run limits still apply. In `enforce`, ceilings bind.
+The customer credit UI is separately gated by PostHog; MCP tools remain available.
 
 ## When lead finding runs
 
