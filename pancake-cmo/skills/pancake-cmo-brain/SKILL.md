@@ -114,3 +114,14 @@ target. Read `advice` before proposing another run. `include: 'decisions'` retur
 per-candidate verdicts, vetoes, and drops from its trail (page with `afterSeq`; size with
 `decisionsLimit`, up to 200 — `limit` is the people page, up to 50) — also for a
 failed run, which has no result document.
+
+## When lead finding runs
+
+The unattended schedule is the member's choice. `lead_finding_schedule_get` reports its `mode`:
+`daily`, `weekdays` (Monday–Friday in the workspace's timezone), `weekly` (with a `weekday`,
+0 = Sunday), `off`, or `agent`. `lead_finding_schedule_set` changes it — only when the user
+asks. `agent` means Pancake's scheduler stands down and you decide when to look for leads by
+calling `lead_finding_start_plan` yourself; no morning digest is sent on days without a run. Switching back to a cadence resumes from the next occurrence and never
+backfills missed days. Pass `localTime` (`HH:MM`) to move the start; omit it to keep the current
+time, or, for a workspace with no schedule yet, Pancake's overnight slot so results are ready for
+the 08:30 digest. These tools never change budgets, lead targets, or tuning.
