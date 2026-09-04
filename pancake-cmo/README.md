@@ -23,5 +23,5 @@ needed. Disconnect at any time under **Pancake → Settings → MCP → Connecte
 ## Source and support
 
 This directory is the source package for Pancake's universal OpenAI plugin listing. See the
-[public repository](https://github.com/get-pancake/pancake-agent-plugins) to review its contents,
+[public repository](https://github.com/get-pancake/agent-plugins) to review its contents,
 or follow the repository's [support guide](../SUPPORT.md).

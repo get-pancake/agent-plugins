@@ -9,7 +9,7 @@
     "url": "https://getpancake.ai"
   },
   "homepage": "https://getpancake.ai",
-  "repository": "https://github.com/get-pancake/pancake-agent-plugins",
+  "repository": "https://github.com/get-pancake/agent-plugins",
   "keywords": ["marketing", "go-to-market", "leads", "seo", "pancake"],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json"

@@ -4,7 +4,7 @@ Run this after any install/config change to `agent-plugins/claude-code/` or the 
 against a real (non-production-critical) Pancake workspace.
 
 ```bash
-claude plugin marketplace add ./agent-plugins   # or get-pancake/pancake-agent-plugins
+claude plugin marketplace add ./agent-plugins   # or get-pancake/agent-plugins
 claude plugin install pancake-workflow@pancake-cmo
 claude plugin details pancake-workflow@pancake-cmo   # expect: Skills (1), MCP servers (1) pancake
 ```

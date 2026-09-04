@@ -12,13 +12,13 @@ This same plugin directory also installs directly into **Codex CLI** — see
 ## Install
 
 ```bash
-claude plugin marketplace add get-pancake/pancake-agent-plugins
+claude plugin marketplace add get-pancake/agent-plugins
 claude plugin install pancake-workflow@pancake-cmo   # bundles the pancake-cmo-brain skill
 ```
 
 The marketplace's own name (declared in `.claude-plugin/marketplace.json`) is `pancake-cmo`, which
 is why the install id is `pancake-workflow@pancake-cmo` even though the repo path is
-`pancake-agent-plugins`.
+`agent-plugins`.
 
 ## Authenticate
 

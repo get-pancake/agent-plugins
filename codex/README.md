@@ -12,7 +12,7 @@ Codex CLI reads the **same** `../claude-code/` plugin directory directly, via th
 `.claude-plugin/marketplace.json`:
 
 ```bash
-codex plugin marketplace add get-pancake/pancake-agent-plugins
+codex plugin marketplace add get-pancake/agent-plugins
 codex plugin add pancake-workflow@pancake-cmo
 codex mcp login pancake      # opens the browser sign-in + workspace picker
 codex mcp list               # expect: pancake … enabled, OAuth
@@ -44,9 +44,9 @@ If your Codex version predates `codex plugin`, install manually instead:
    into Codex's skill directory:
 
    ```bash
-   git clone https://github.com/get-pancake/pancake-agent-plugins
+   git clone https://github.com/get-pancake/agent-plugins
    mkdir -p ~/.codex/skills
-   ln -s "$(pwd)/pancake-agent-plugins/codex/skills/pancake-cmo-brain" ~/.codex/skills/pancake-cmo-brain
+   ln -s "$(pwd)/agent-plugins/codex/skills/pancake-cmo-brain" ~/.codex/skills/pancake-cmo-brain
    ```
 
 2. Register the MCP server — append
