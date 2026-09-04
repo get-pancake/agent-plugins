@@ -82,10 +82,19 @@ their execution-aware status. Use `seo_get_article` with a publication id for it
 revision pointers, active appointment, and current status. These tools are planning reads: they do
 not draft, approve, schedule, or publish content.
 
-## Lead-finding runs (read-only)
+## Lead-finding runs
 
-Runs are started by Pancake's own scheduler — this surface cannot start one. Use
-`lead_finding_list_runs` to review recent runs and their durable status, and
-`lead_finding_get_run` with a run id for its counts, spend and drop ledgers, and a bounded page
-of the people it found. While a run is `pending` or `running` there are no results yet — that is
-normal; it always reaches `published` or `failed`.
+Pancake's scheduler runs the nightly waterfall on its own. This surface can also start work on
+demand, and the unit is CREDITS. Call `lead_finding_get_spend` first: it says how many credits the
+workspace's spend ceiling still allows today and this month, and how many agent-started runs remain
+allowed. Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
+a scope — the full waterfall or one pipeline — or an explicit split) to see how the credits would
+be spread across post-engagement, company-signal, and persona-sweep, the leads each stage is
+expected to find, and what the ceiling would actually let through; it is free. Confirm the credits
+with the user, then `lead_finding_start_plan` with the same arguments; it returns the head run id
+at once. Poll `lead_finding_get_run` every minute or two until status is `published` or
+`failed` — `pending` and `running` both mean wait, never that something is stuck — and never
+start a second plan while one is in flight. `lead_finding_cancel_run` stops a run and keeps the
+leads it already found. `lead_finding_list_runs` reviews recent runs (a waterfall's stages share a
+`chainId`); `lead_finding_get_run` reads counts, spend and drop ledgers, and a bounded page of
+people.
