@@ -1,12 +1,12 @@
 ---
 name: pancake-cmo-brain
-description: "Use Pancake over MCP: ground work in the GTM brain, review its proposals, read and judge leads, manage signals, run the SEO article workspace, start runs, and see what changed."
+description: "Use Pancake over MCP: ground work in the GTM brain, review its proposals, read and judge leads, manage signals, run the SEO article workspace, administer the workspace, and see what changed."
 ---
 
 # Pancake
 
 You have access to a Pancake workspace over MCP: its go-to-market brain, qualified leads, signal
-settings, SEO publication plan, and lead-finding runs.
+settings, SEO publication plan, lead-finding runs, and the workspace's own settings.
 
 ## Ground every deliverable in the brain first
 
@@ -208,6 +208,40 @@ calling `lead_finding_start_plan` yourself; no morning digest is sent on days wi
 backfills missed days. Pass `localTime` (`HH:MM`) to move the start; omit it to keep the current
 time, or, for a workspace with no schedule yet, Pancake's overnight slot so results are ready for
 the 08:30 digest. These tools never change budgets, lead targets, or tuning.
+
+## Workspace settings, members, Slack delivery, and billing
+
+`workspace_get` answers "what is this workspace" in one credential-free read: name, icon, slug,
+timezone, member and pending-invitation counts, the plan and subscription status with the access
+decision, whether Slack is connected and which channel deliveries land in, and the email
+notification cadence. Read it before changing anything below, and change settings only when the
+user asks:
+
+- `workspace_update` — name, icon (`null` clears), timezone. A timezone change retimes EVERY
+  unattended schedule (lead finding, the Brain improvement run, SEO planning and visibility, the
+  08:30 digest) to the same local times in the new zone; the result lists each schedule's next run
+  so you can confirm the new rhythm to the user.
+- `workspace_notifications_set` — the email digest on/off and `daily` | `weekly`, both fields
+  every time (an atomic replace). This is workspace state shared by every member.
+- `workspace_members_list` — members (name, email, joined) and pending invitations; also the
+  recipient list for anything addressed to the team. `workspace_member_invite` emails one address
+  a 7-day invitation as the connecting member (re-inviting an address refreshes it; the result
+  never says whether the address already has an account); `workspace_invitation_revoke` cancels a
+  pending link. Membership starts only when the invitee accepts in their browser — you cannot
+  accept for them, and member removal is not on this surface.
+- `workspace_mcp_grants_list` — the agents and clients connected to the workspace, each with its
+  own credit allowance and pause state, and which entry is YOUR connection. Read only: approving a
+  new client or revoking one is a member's browser action.
+- `slack_channels_list` / `slack_delivery_set` — where lead-finding results are posted and how
+  (`short` | `detailed`). A `reconnect_required` listing means a member must reconnect Slack in
+  Settings before a channel can be chosen; a channel the bot cannot post to is refused with what to
+  do. Connecting and disconnecting Slack stay in the browser.
+- `billing_get` — plan, status, the access decision, and the catalog. Use it to explain a refusal
+  (a seat, a run, a feature); upgrading, checkout, and the billing portal stay in the browser.
+
+Nothing here spends credits. Anything that grants access, handles a credential, or pays — approving
+clients, accepting invitations, connecting Slack, checkout, creating or deleting the workspace — is
+deliberately not a tool: say so and point the user at Settings.
 
 ## What happened since your last check
 
