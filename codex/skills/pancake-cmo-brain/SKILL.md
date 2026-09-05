@@ -1,6 +1,6 @@
 ---
 name: pancake-cmo-brain
-description: "Use Pancake over MCP: ground work in the GTM brain, read leads, SEO plans, lead-finding runs, and what happened since your last check; manage signals and feedback."
+description: "Use Pancake over MCP: ground work in the GTM brain, review its improvement proposals, read and judge leads, manage signals and tracked profiles, read SEO plans, runs, and what changed."
 ---
 
 # Pancake
@@ -50,6 +50,32 @@ The brain is shared, versioned, human-owned knowledge, not your scratchpad.
 user first. It returns `{id, kind, revision}`; pass those to `brain_restore_item` to undo. Keep
 them, because archived items no longer appear in `brain_get`.
 
+## Reviewing the improvement loop
+
+Pancake's improvement loop reads lead feedback, run outcomes, and market feedback and writes
+**proposals** — it never changes the brain by itself. Reviewing them is the loop an agent-run
+workspace closes:
+
+1. `brain_list_proposals` lists the pending inbox (`activity_since` also announces new
+   proposals as `strategy.proposal.created` events since your last check) (add `{"status":"all"}` for history). A
+   `change` of `create` / `revise` / `archive` is a concrete edit with the proposed `content`
+   and the engine's `rationale`; a `question` proposes nothing and asks the user something.
+2. `brain_resolve_proposal` with `accept` applies a concrete change as a new revision, or
+   `reject` dismisses it (the loop will not re-raise it without new evidence). Questions are
+   answered with `brain_answer_proposal_question` in the user's own words, which pulls the next
+   analysis forward so the concrete proposal follows within minutes.
+3. `brain_get` then shows the accepted change at its new revision.
+
+Resolving is single-shot: replaying the same decision answers the proposal's current state. If a
+targeted item moved since the proposal was written, the accept fails and the proposal stays
+pending — re-read with `brain_get` and decide again. Resolve proposals only when the user asked
+you to review the inbox, and put the decision in front of them when the rationale is thin.
+
+When the user reports what the market said — a customer call, a Slack thread, "most of these
+people are outside our ICP" — forward it verbatim with `brain_record_market_feedback` rather
+than editing the brain yourself. It writes nothing to the brain; the next analysis digests it and
+proposes the change for review.
+
 ## Reading leads and submitting feedback
 
 Use `leads_list` for a bounded, newest-first page and follow its `nextOffset` to continue. Use
@@ -64,7 +90,16 @@ judgment; the counts summarize all members.
 
 Only call `lead_feedback_submit` when the user asks to judge a lead or clearly confirms the
 verdict. It takes the lead's `personId`, `up` or `down`, and an optional comment. Feedback helps
-Pancake improve; it does not disqualify the lead or change its stage.
+Pancake improve; it does not disqualify the lead or change its stage. `lead_feedback_withdraw`
+takes that verdict back (only the connecting member's own) — withdrawing where none exists is a
+no-op.
+
+A lead whose `stage` is `needs_review` is a weak match a run parked for a human: it is not
+counted, delivered, or enrollable until someone decides. When the user has looked at it and wants
+it in, `lead_promote_from_review` with its lead id moves it to `qualified`; any other stage is
+refused with the current stage named. `lead_disqualify` is the explicit removal (it takes the
+lead's `personId` and its exact `version` from `leads_get`, and stops live outreach at that lead)
+— always confirm first; there is no undo here.
 
 ## Signal settings
 
@@ -74,6 +109,12 @@ changing only `enabled` or `weight`.
 
 `position_change` is marked `disabled_until_implemented` and cannot be enabled. `hiring` and
 `stack` are implemented but opt-in. Change signal settings only when the user asks.
+
+The competitor, influencer, and own-brand signals read the workspace's **tracked profiles** — the
+LinkedIn people and company pages whose engagers get collected. `tracked_profiles_list` shows
+them with their ids; `tracked_profile_add` tracks a URL with a label and a `kind` (idempotent on
+the URL — re-adding updates label and kind); `tracked_profile_remove` takes an id. Changing the
+watchlist changes what the next lead-finding run collects, so do it only when the user asks.
 
 ## SEO publication plan
 
