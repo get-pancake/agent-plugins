@@ -1,6 +1,6 @@
 ---
 name: pancake-cmo-brain
-description: "Use Pancake over MCP: ground work in the GTM brain, review its improvement proposals, read and judge leads, manage signals and tracked profiles, read SEO plans, runs, and what changed."
+description: "Use Pancake over MCP: ground work in the GTM brain, review its proposals, read and judge leads, manage signals, run the SEO article workspace, start runs, and see what changed."
 ---
 
 # Pancake
@@ -116,16 +116,43 @@ them with their ids; `tracked_profile_add` tracks a URL with a label and a `kind
 the URL — re-adding updates label and kind); `tracked_profile_remove` takes an id. Changing the
 watchlist changes what the next lead-finding run collects, so do it only when the user asks.
 
-## SEO publication plan
+## SEO articles
 
-Use `seo_list_calendar` to read a bounded chronological page of publication appointments and
-their execution-aware status. Use `seo_get_article` with a publication id for its brief, content
-revision pointers, active appointment, and current status. Use `seo_get_article_content` with the
-same id to pull the article text itself: every immutable content revision with its full markdown
-`body`, title, excerpt, and SEO metadata, plus the approval history — `approvedContent` is the
-revision a member approved (null until one is), the text to publish through your own site build.
-These tools are planning and content reads: they do not draft, approve, schedule, or publish
-content.
+The article workspace is fully drivable from here; the loop is **backlog → create or edit →
+draft → approve → schedule**, and `activity_since` shows the `seo.publication.*` events it wrote.
+
+- `seo_list_backlog` lists every active article — planned, drafting, approved, scheduled —
+  newest first, with a `status` filter. It is the read to start from: `seo_list_calendar` lists
+  only articles that have an appointment, so an unscheduled brief is invisible there.
+  `seo_list_article_history` is the past: published articles (with their live URL), failed
+  attempts, past-due days, and cancelled articles, with search, a status filter, and a date range.
+- `seo_get_article` reads one article's brief, revision pointers, appointment, and status;
+  `seo_get_article_content` reads the text — every immutable content revision with its markdown
+  `body`, plus the approval history. `approvedContent` is the revision a member approved.
+- `seo_create_article` plans an article from a brief (`workingTitle` and `purpose` required;
+  target phrase, angle, notes, an explicit `slug`, and a `publishOn` day optional). Ground the
+  brief in `brain_get` and read the backlog first so you do not plan a phrase already there.
+  Creating consumes the plan entitlement; an unsubscribed workspace is refused with a sentence
+  naming billing.
+- `seo_update_article_brief` patches the brief and/or the slug under the article's exact
+  `revision` from `seo_get_article`: omitted fields are kept, `null` clears an optional one. A
+  stale revision fails naming the current one — re-read and retry. A slug change moves a
+  published article's URL; confirm it first.
+- `seo_save_article_content` replaces the draft (title, markdown body, optional excerpt, SEO
+  title, meta description) as a new revision. **Saving after approval suspends the approval**:
+  the new revision must be approved again. Write in the voice's blog variant and never a banned
+  claim.
+- `seo_approve_article` approves the exact `currentContentRevision` you read; a newer draft
+  saved meanwhile fails and names it. Approve only when the user asked or delegated the review.
+- `seo_schedule_article` is the one calendar verb: a `publishOn` day schedules an unscheduled
+  article or moves its appointment; `publishOn: null` removes it. The publish hour is fixed in
+  the workspace's timezone, and an appointment needs an approved draft by its day or it shows
+  as blocked. Pick a free day from `seo_list_calendar`.
+- `seo_cancel_article` drops an article from the plan (soft — it moves to history with its
+  drafts and appointment intact, and `seo_restore_article` brings it back). Confirm first.
+
+None of these publish to a CMS or start a drafting run; publishing targets and on-demand runs
+are not on this surface.
 
 ## Lead-finding runs
 
