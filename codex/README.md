@@ -1,7 +1,7 @@
-# Pancake workflow — Codex
+# Pancake — Codex
 
 Gives Codex CLI the same Pancake workspace access as the Claude Code plugin: the
-[`pancake-cmo-brain`](skills/pancake-cmo-brain/SKILL.md) skill — the same skill a member can
+[`pancake`](skills/pancake/SKILL.md) skill — the same skill a member can
 already download from **Settings → MCP** in the app, generated (not hand-written) here — plus
 the workspace-scoped MCP server. Authentication is a browser sign-in (OAuth); there is no key
 or env var to configure.
@@ -13,7 +13,7 @@ Codex CLI reads the **same** `../claude-code/` plugin directory directly, via th
 
 ```bash
 codex plugin marketplace add get-pancake/agent-plugins
-codex plugin add pancake-workflow@pancake-cmo
+codex plugin add pancake@pancake
 codex mcp login pancake      # opens the browser sign-in + workspace picker
 codex mcp list               # expect: pancake … enabled, OAuth
 ```
@@ -31,7 +31,7 @@ codex mcp add pancake --url https://app.getpancake.ai/api/mcp \
 codex mcp login pancake
 ```
 
-`this/skills/pancake-cmo-brain/` exists as a **real file**, not a symlink to a shared location —
+`this/skills/pancake/` exists as a **real file**, not a symlink to a shared location —
 Codex's plugin-install cache step silently drops a symlink that points outside its plugin root,
 so a shared symlink installs an empty `skills/` directory even though it looks fine in the
 marketplace source tree.
@@ -46,7 +46,7 @@ If your Codex version predates `codex plugin`, install manually instead:
    ```bash
    git clone https://github.com/get-pancake/agent-plugins
    mkdir -p ~/.codex/skills
-   ln -s "$(pwd)/agent-plugins/codex/skills/pancake-cmo-brain" ~/.codex/skills/pancake-cmo-brain
+   ln -s "$(pwd)/agent-plugins/codex/skills/pancake" ~/.codex/skills/pancake
    ```
 
 2. Register the MCP server — append
@@ -62,8 +62,8 @@ client differs): one `brain_get` read, then one low-risk write (add + remove a w
 
 ## Uninstall
 
-Marketplace install: `codex plugin remove pancake-workflow@pancake-cmo` then
-`codex plugin marketplace remove pancake-cmo` then `codex mcp remove pancake`.
+Marketplace install: `codex plugin remove pancake@pancake` then
+`codex plugin marketplace remove pancake` then `codex mcp remove pancake`.
 
 Manual fallback install: remove the symlink from `~/.codex/skills/` and delete the
 `[mcp_servers.pancake]` block from `~/.codex/config.toml`.

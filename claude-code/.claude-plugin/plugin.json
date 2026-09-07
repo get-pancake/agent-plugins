@@ -1,8 +1,8 @@
 {
-  "name": "pancake-workflow",
+  "name": "pancake",
   "displayName": "Pancake",
-  "description": "Connect Claude Code and Cowork to a Pancake workspace's GTM Brain, leads, signals, SEO plan, and run history.",
-  "version": "0.2.1",
+  "description": "Connect Claude Code and Cowork to your Pancake workspace: GTM Brain, leads, signals, SEO articles, campaigns, and workspace settings.",
+  "version": "0.3.0",
   "author": {
     "name": "Pancake",
     "email": "hey@pancake.ai",

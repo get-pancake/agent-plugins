@@ -5,8 +5,8 @@ against a real (non-production-critical) Pancake workspace.
 
 ```bash
 claude plugin marketplace add ./agent-plugins   # or get-pancake/agent-plugins
-claude plugin install pancake-workflow@pancake-cmo
-claude plugin details pancake-workflow@pancake-cmo   # expect: Skills (1), MCP servers (1) pancake
+claude plugin install pancake@pancake
+claude plugin details pancake@pancake   # expect: Skills (1), MCP servers (1) pancake
 ```
 
 Then inside a Claude Code session with the plugin enabled:
@@ -22,8 +22,8 @@ Then inside a Claude Code session with the plugin enabled:
 Clean up:
 
 ```bash
-claude plugin uninstall pancake-workflow@pancake-cmo
-claude plugin marketplace remove pancake-cmo
+claude plugin uninstall pancake@pancake
+claude plugin marketplace remove pancake
 ```
 
 Then disconnect the grant in the Pancake app: Settings → MCP → Connected clients → Disconnect.

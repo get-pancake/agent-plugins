@@ -1,5 +1,5 @@
 {
-  "name": "pancake-cmo",
+  "name": "pancake",
   "description": "Official Pancake integrations for Claude Code and Cowork.",
   "owner": {
     "name": "Pancake",
@@ -7,9 +7,9 @@
   },
   "plugins": [
     {
-      "name": "pancake-workflow",
+      "name": "pancake",
       "source": "./claude-code",
-      "description": "Pancake workspace MCP connection and GTM operating skill for Claude Code and Cowork."
+      "description": "Connect your Pancake workspace to Claude Code, Cowork, and Codex."
     }
   ]
 }

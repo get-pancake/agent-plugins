@@ -1,25 +1,25 @@
 # Pancake agent plugins
 
 Installable packages that connect a coding agent to your Pancake workspace's MCP server —
-reading the GTM Brain, leads, signals, SEO plan, and lead-finding run history.
+working with your GTM Brain, leads, signals, SEO articles, campaigns, and workspace settings.
 Authentication is a **browser sign-in** (OAuth): your tool opens Pancake's login, you pick the
 workspace to connect, and you're done — there is no API key to copy, and nothing in these
 packages is secret.
 
-- **`pancake-cmo-brain`** — the operating conventions for the tools: ground work in the brain
-  first, respect the voice's banned claims, patch semantics on every write, revisions as
-  concurrency tokens, and the fact that lead-finding runs are read-only on this tenant surface.
+- **`pancake`** — the operating conventions for the tools: ground work in the Brain
+  first, respect the voice's banned claims, read before writing, use revisions as concurrency
+  tokens, and preview credit costs before asking for confirmation to start lead-finding runs.
   It's the same skill you can
   download directly from **Settings → MCP** inside the Pancake app, generated identically into
-  `claude-code/skills/pancake-cmo-brain/SKILL.md`,
-  `pancake-cmo/skills/pancake-cmo-brain/SKILL.md`,
-  `codex/skills/pancake-cmo-brain/SKILL.md`, and `droid/skills/pancake-cmo-brain/SKILL.md`
+  `claude-code/skills/pancake/SKILL.md`,
+  `pancake/skills/pancake/SKILL.md`,
+  `codex/skills/pancake/SKILL.md`, and `droid/skills/pancake/SKILL.md`
   (real files, not symlinks — a symlinked skill silently installs empty under Codex's plugin
   cache).
 - [`claude-code/`](claude-code/README.md) — an installable Claude Code plugin (this repo's own
   `.claude-plugin/marketplace.json` at the root points at it; `claude-code/.claude-plugin/plugin.json`
   and `claude-code/.mcp.json` describe the plugin itself).
-- [`pancake-cmo/`](pancake-cmo/README.md) — the universal OpenAI plugin package for the shared
+- [`pancake/`](pancake/README.md) — the universal OpenAI plugin package for the shared
   ChatGPT and Codex directory, with its `.codex-plugin/plugin.json`, MCP connection, listing
   metadata, brand asset, and generated skill.
 - [`codex/`](codex/README.md) — **the same `claude-code/` plugin also installs directly into
@@ -27,7 +27,7 @@ packages is secret.
   sign-in needs Codex CLI **0.148.0 or newer** (the first release that discovers Pancake's
   client-ID metadata document); 0.147.0 and older must register the server with the hosted
   client id below, and `codex/README.md` documents both plus a manual fallback for Codex
-  versions without plugin-marketplace support. `pancake-cmo/` is the public universal directory
+  versions without plugin-marketplace support. `pancake/` is the public universal directory
   package.
 - [`droid/`](droid/README.md) — Factory Droid CLI, as a manual two-step install (Droid has no
   plugin marketplace): register the MCP server (`droid mcp add` or `.factory/mcp.json`), then
@@ -48,6 +48,35 @@ does not implement — they land once their upstream client-ID-metadata (CIMD) s
 This repo is synced automatically from Pancake's product source of truth and is not edited
 directly — a pull request against it will be overwritten by the next sync. If something here is
 wrong or out of date, contact Pancake support or your workspace admin.
+
+## Upgrade from an older install
+
+Pancake replaces the old `pancake-workflow@pancake-cmo` plugin and `pancake-cmo-brain` skill.
+This is a one-time identity change: a marketplace refresh does not rename an installed plugin.
+Remove the old plugin and marketplace, then install Pancake:
+
+```bash
+# Claude Code
+claude plugin uninstall pancake-workflow@pancake-cmo
+claude plugin marketplace remove pancake-cmo
+claude plugin marketplace add get-pancake/agent-plugins
+claude plugin install pancake@pancake
+
+# Codex
+codex plugin remove pancake-workflow@pancake-cmo
+codex plugin marketplace remove pancake-cmo
+codex plugin marketplace add get-pancake/agent-plugins
+codex plugin add pancake@pancake
+```
+
+In Cowork, remove the old plugin and marketplace in plugin settings, add the same GitHub
+repository again, and install **Pancake**. Restart the client after migrating. If you manually
+installed the old skill, replace that copy with `skills/pancake/` instead of keeping both.
+
+The MCP server name (`pancake`), URL, and workspace permissions are unchanged. Removing a
+plugin does not revoke its standing OAuth grant. The client may ask you to sign in again;
+review the requested access before approving it. This repository is Pancake's direct
+marketplace, not evidence of acceptance into OpenAI's or Anthropic's public Directory.
 
 ## Authenticate
 

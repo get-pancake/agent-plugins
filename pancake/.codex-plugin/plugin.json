@@ -1,7 +1,7 @@
 {
-  "name": "pancake-cmo",
-  "version": "0.1.1",
-  "description": "Connect ChatGPT and Codex to a Pancake workspace, with its GTM Brain, leads, signals, SEO plan, and run history.",
+  "name": "pancake",
+  "version": "0.2.0",
+  "description": "Connect ChatGPT and Codex to your Pancake workspace: GTM Brain, leads, signals, SEO articles, campaigns, and workspace settings.",
   "author": {
     "name": "Pancake",
     "email": "hey@pancake.ai",
@@ -15,7 +15,7 @@
   "interface": {
     "displayName": "Pancake",
     "shortDescription": "Bring your GTM Brain, leads, signals, and SEO plan into ChatGPT and Codex.",
-    "longDescription": "Connect your Pancake workspace to ChatGPT and Codex. Ground marketing work in your approved GTM Brain, review qualified leads and lead-finding runs, inspect signal settings and the SEO publication plan, submit lead feedback, and make requested Brain or signal updates. Access is workspace-scoped and authorized through Pancake's browser OAuth flow.",
+    "longDescription": "Connect your Pancake workspace to ChatGPT and Codex. Ground marketing work in your GTM Brain, manage leads, signals, SEO articles, campaigns, and workspace settings when asked. Lead-finding runs require a credit preview and explicit confirmation; enrolling a lead starts real LinkedIn outreach. Access is limited to the workspace you select during Pancake's browser sign-in.",
     "developerName": "Pancake",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],

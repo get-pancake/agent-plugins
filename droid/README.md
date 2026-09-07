@@ -1,7 +1,7 @@
 # Pancake for Factory Droid
 
 Connects Factory's Droid CLI to your Pancake workspace's MCP server, with the same
-`pancake-cmo-brain` skill the other packages ship. Authentication is a browser sign-in
+`pancake` skill the other packages ship. Authentication is a browser sign-in
 (OAuth) — Droid supports Pancake's client-ID-metadata-document flow out of the box, so there
 is no key, token, or env var to configure and nothing in this package is secret.
 
@@ -20,8 +20,8 @@ to `~/.factory/mcp.json` (personal) or a trusted project's `.factory/mcp.json` (
 your team). Then type `/mcp` inside Droid and authenticate `pancake` — a browser window opens
 where you sign in to Pancake the usual way and pick the workspace to connect.
 
-**2. Install the skill** — copy [`skills/pancake-cmo-brain/`](skills/pancake-cmo-brain/) to
-`~/.factory/skills/pancake-cmo-brain/` (personal) or `<your-repo>/.factory/skills/` (project),
+**2. Install the skill** — copy [`skills/pancake/`](skills/pancake/) to
+`~/.factory/skills/pancake/` (personal) or `<your-repo>/.factory/skills/` (project),
 then restart Droid so it loads.
 
 ## Manage the connection
