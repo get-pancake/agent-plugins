@@ -216,6 +216,15 @@ runs. Use the preview's `runnable` result, not the raw remaining ceiling, to dec
 budget. Explicit pauses and the normal run limits still apply. In `enforce`, ceilings bind.
 The customer credit UI is separately gated by PostHog; MCP tools remain available.
 
+## No workspace yet: setting one up (onboarding)
+
+If the user connected you BEFORE having a Pancake workspace, your tool list is `onboarding_status`
+and nothing else: onboarding happens in the Pancake app. Call it first — it tells you whether the
+user still has to open the onboarding page (sign in with email or Google, complete the wizard,
+start the trial), whether it is underway, or whether their workspace now exists, in which case this
+connection is bound to it and the workspace tools appear on your next tool listing. Tell the user
+exactly what to do and poll it every minute or two.
+
 ## When lead finding runs
 
 The unattended schedule is the member's choice. `lead_finding_schedule_get` reports its `mode`:
