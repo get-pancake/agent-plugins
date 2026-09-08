@@ -180,7 +180,11 @@ workspace's spend ceiling still allows today and this month, how many agent-star
 allowed, and — under `connection` — this connection's own allowance and whether it (or every agent
 start, `agentStartsPaused`) is paused. In enforce mode, the smaller ceiling bounds a run;
 in shadow mode, these figures are observational. Members may lower allowances or pause/unpause;
-only operators may raise allowances. Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
+only operators may raise allowances. For the billing PERIOD rather than the daily ceiling — what the
+workspace has left this period and what each run cost — call `credits_get_balance`: it returns the
+period's allowance, held, used, and available credits plus the latest ledger movements, each naming
+its run, pipeline, outcome, leads qualified, and the credits held, settled, and released. In shadow
+mode a negative available balance means "over allowance, not enforced yet". Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
 a scope — the full waterfall or one pipeline — or an explicit split) to see how the credits would
 be spread across post-engagement, company-signal, and persona-sweep, the leads each stage is
 expected to find, and the runnable budget for the current enforcement mode; it is free. Confirm the credits
