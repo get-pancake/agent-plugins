@@ -283,7 +283,8 @@ and replies; sender disconnects; Brain revisions and proposals; SEO publication 
 opaque cursor. Store the `nextCursor` it returns (it is returned even when nothing happened) and
 pass it back as `cursor` on your next check; omit it only the first time. Every event carries a
 `meaning` line naming the follow-up call — a run completed points at `lead_finding_get_run`,
-credits refused or a ceiling change at `lead_finding_get_spend`, a reply at
+credits refused or a ceiling change at `lead_finding_get_spend`, the balance low or exhausted
+(`credits.balance.low` / `credits.balance.exhausted`) at `credits_get_balance`, a reply at
 `campaign_get_lead_activity`, a sender disconnect at `campaign_get_sender_status`, a Brain
 change at `brain_get`. Narrow with `kinds` (exact event kinds) or `contexts` (leads, credits,
 campaigns, strategy, seo, mcp, onboarding, slack); a filtered page is still a full page.
