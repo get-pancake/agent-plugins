@@ -90,14 +90,16 @@ judgment; the counts summarize all members.
 
 Only call `lead_feedback_submit` when the user asks to judge a lead or clearly confirms the
 verdict. It takes the lead's `personId`, `up` or `down`, and an optional comment. Feedback helps
-Pancake improve; it does not disqualify the lead or change its stage. `lead_feedback_withdraw`
+Pancake improve; it never disqualifies the lead, and an `up` on a `needs_review` lead promotes
+it to `qualified` (a `down` leaves the stage alone). `lead_feedback_withdraw`
 takes that verdict back (only the connecting member's own) — withdrawing where none exists is a
 no-op.
 
 A lead whose `stage` is `needs_review` is a weak match a run parked for a human: it is not
 counted, delivered, or enrollable until someone decides. When the user has looked at it and wants
-it in, `lead_promote_from_review` with its lead id moves it to `qualified`; any other stage is
-refused with the current stage named. `lead_disqualify` is the explicit removal (it takes the
+it in, an `up` through `lead_feedback_submit` promotes it, or `lead_promote_from_review` with its
+lead id moves it to `qualified` without recording a judgment; any other stage is refused with
+the current stage named. `lead_disqualify` is the explicit removal (it takes the
 lead's `personId` and its exact `version` from `leads_get`, and stops live outreach at that lead)
 — always confirm first; there is no undo here.
 
