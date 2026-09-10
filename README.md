@@ -42,14 +42,72 @@ packages is secret.
   copy the skill into a `.factory/skills/` directory. Droid supports Pancake's
   client-ID-metadata-document OAuth flow natively.
 
-CLIs that support the OAuth flow but ship no client metadata document of their own (Codex CLI
-≤ 0.147.0, Gemini CLI, Amp, Mastra Code, Pi, Mistral Vibe, fx) can use Pancake's hosted client id
-instead — set their
-static OAuth client id / `client_metadata_url` to
-`https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json`; the in-app
-**Settings → MCP** guide carries per-tool snippets. opencode, GitHub Copilot CLI, Kimi Code, and
-goose remain absent: they only register OAuth clients dynamically (DCR), which Pancake's sign-in
-does not implement — they land once their upstream client-ID-metadata (CIMD) support ships.
+## Supported clients
+
+Pancake's sign-in is a Client ID Metadata Document (CIMD) OAuth flow — no dynamic client
+registration (DCR), no API key. A client is listed as supported only once its browser sign-in
+has completed against production (`app.getpancake.ai`), through the `/connect` workspace picker,
+and a `tools/list` came back. "Static id" means the client cannot discover a client id on its
+own and must be handed Pancake's hosted one — a public URL, not a credential:
+
+```
+https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json
+```
+
+| Client                                              | Setup                                               | Status               | Verified (version · date)                                                                                                                                                                                                 |
+| --------------------------------------------------- | --------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code                                         | plugin, no config                                   | Pending verification | 2.1.267 · 2026-09-09 — the CLI's authorize step reached the consent page; consent + `tools/list` still to be completed in a browser                                                                                       |
+| Codex CLI ≥ 0.148                                   | plugin, no config                                   | Pending verification | 0.153.4 · 2026-09-09 — the CLI's authorize step reached the consent page; consent + `tools/list` still to be completed in a browser                                                                                       |
+| Codex CLI ≤ 0.147                                   | static id (`[mcp_servers.pancake.oauth] client_id`) | Pending verification | 0.147.0 · 2026-09-09 — login reached the consent page only with the static id; production rejected its random `/callback/<token>` path until the fix shipping with this change                                            |
+| GitHub Copilot CLI ≥ 1.0.83                         | `~/.copilot/mcp-config.json`, no config             | Pending verification | CIMD shipped in [v1.0.83](https://github.com/github/copilot-cli/releases/tag/v1.0.83) (2026-09-04); older releases: `oauthClientId` static id                                                                             |
+| VS Code (Copilot Chat)                              | `.vscode/mcp.json`, no config                       | Pending verification | CIMD since 1.106 ([vscode#271403](https://github.com/microsoft/vscode/pull/271403))                                                                                                                                       |
+| Factory Droid                                       | `droid mcp add`, no config                          | Pending verification | CIMD native per [Factory docs](https://docs.factory.ai/harness/mcp)                                                                                                                                                       |
+| Gemini CLI                                          | static id (`oauth.clientId` in `settings.json`)     | Pending verification | No CIMD ([gemini-cli#25724](https://github.com/google-gemini/gemini-cli/issues/25724) closed without implementation); random-port `/oauth/callback` redirect is covered by the hosted id                                  |
+| Amp                                                 | static id (`amp mcp oauth login --client-id`)       | Pending verification | No CIMD evidence; fixed `localhost:8976/oauth/callback` redirect is covered by the hosted id                                                                                                                              |
+| Cursor                                              | `~/.cursor/mcp.json`                                | Pending verification | No CIMD upstream ([forum thread](https://forum.cursor.com/t/mcp-oauth-cimd-support-plans-and-timelines/148096), staff: "no timeline"); DCR or `auth.CLIENT_ID` only — expected to FAIL without CIMD                       |
+| Zed                                                 | `settings.json` `context_servers`                   | Pending verification | Ships a CIMD document, but [zed#56769](https://github.com/zed-industries/zed/issues/56769) (CIMD not working) and [zed#62637](https://github.com/zed-industries/zed/issues/62637) (public client without secret) are open |
+| goose ≥ 1.32                                        | no config                                           | Pending verification | CIMD native since 1.32.0 ([goose#8550](https://github.com/aaif-goose/goose/pull/8550))                                                                                                                                    |
+| opencode                                            | —                                                   | Unsupported          | DCR only; [opencode#25961](https://github.com/anomalyco/opencode/issues/25961) open                                                                                                                                       |
+| Kimi Code CLI                                       | —                                                   | Unsupported          | FastMCP OAuth, no client-id configuration documented ([kimi-cli#2172](https://github.com/MoonshotAI/kimi-cli/issues/2172))                                                                                                |
+| Mistral Vibe                                        | —                                                   | Unsupported          | [Vibe docs](https://docs.mistral.ai/vibe/code/cli/mcp-servers): OAuth-protected MCP servers not supported (API key/headers only)                                                                                          |
+| Mastra Code                                         | —                                                   | Unsupported          | CIMD PR [mastra#22934](https://github.com/mastra-ai/mastra/pull/22934) open                                                                                                                                               |
+| Cline                                               | —                                                   | Unsupported          | static-id PR [cline#13679](https://github.com/cline/cline/pull/13679) open, no CIMD                                                                                                                                       |
+| Pi (`pi-mcp-adapter`), fx, Windsurf, Warp, Grok CLI | —                                                   | Unverified           | no CIMD or static-id evidence in docs or changelogs                                                                                                                                                                       |
+| Claude.ai / Claude Desktop connectors               | —                                                   | Coming               | blocked on the HTTP-logging issue (ADR 0055)                                                                                                                                                                              |
+
+Rows marked "Pending verification" are installed and signed in by hand on a real machine
+(PAN-849); a row moves to "Supported" only with a version and date. The in-app **Settings → MCP**
+guide mirrors this table and carries the per-client snippets.
+
+### Static-id snippets
+
+**Gemini CLI** — `~/.gemini/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "pancake": {
+      "httpUrl": "https://app.getpancake.ai/api/mcp",
+      "oauth": {
+        "enabled": true,
+        "clientId": "https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json"
+      }
+    }
+  }
+}
+```
+
+then `/mcp auth pancake` inside Gemini CLI.
+
+**Amp** — after adding the server to Amp's `amp.mcpServers` settings:
+
+```bash
+amp mcp oauth login pancake \
+  --server-url https://app.getpancake.ai/api/mcp \
+  --client-id https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json
+```
+
+**Codex CLI ≤ 0.147** — see [`codex/README.md`](codex/README.md).
 
 ## This repo is a mirror, not the source
 

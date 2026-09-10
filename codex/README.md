@@ -32,6 +32,10 @@ codex mcp add pancake --url https://app.getpancake.ai/api/mcp \
 codex mcp login pancake
 ```
 
+Codex 0.147.0 answers the sign-in on a per-login random callback path (`/callback/<token>`);
+Pancake's sign-in accepts that shape since 2026-09-09 (PAN-849) — on an older Pancake release the
+static-id login failed with `redirect_uri is not registered` even with the block above.
+
 `this/skills/pancake/` exists as a **real file**, not a symlink to a shared location —
 Codex's plugin-install cache step silently drops a symlink that points outside its plugin root,
 so a shared symlink installs an empty `skills/` directory even though it looks fine in the
