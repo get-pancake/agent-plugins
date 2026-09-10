@@ -2,7 +2,9 @@
 
 Connects ChatGPT and Codex to a Pancake workspace through Pancake's hosted MCP server. The
 plugin includes the `pancake` skill so the agent reads the GTM Brain before creating
-marketing work, respects banned claims and revision tokens, and uses write tools only when asked.
+marketing work, respects banned claims and revision tokens, and uses write tools only when asked,
+plus three playbook skills — `pancake-daily-leads`, `pancake-review-leads`, and
+`pancake-refresh-icp` — for the routines an agent runs on a workspace.
 
 ## What it can access
 

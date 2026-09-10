@@ -16,6 +16,14 @@ packages is secret.
   `codex/skills/pancake/SKILL.md`, and `droid/skills/pancake/SKILL.md`
   (real files, not symlinks — a symlinked skill silently installs empty under Codex's plugin
   cache).
+- **Playbooks** — three ready-made routines shipped as their own skills beside the tool skill,
+  each stating what it will spend before spending and ending with what the human should look at:
+  [`pancake-daily-leads`](pancake/skills/pancake-daily-leads/SKILL.md) (find N leads today under
+  X credits), [`pancake-review-leads`](pancake/skills/pancake-review-leads/SKILL.md) (judge what
+  came in since your last check, from a cursor the agent keeps), and
+  [`pancake-refresh-icp`](pancake/skills/pancake-refresh-icp/SKILL.md) (resolve Brain proposals
+  and feedback, then show the Brain diff). They are authored under `pancake/skills/` and copied
+  verbatim into the other packages, so every install gets the same four skills.
 - [`claude-code/`](claude-code/README.md) — an installable Claude Code plugin (this repo's own
   `.claude-plugin/marketplace.json` at the root points at it; `claude-code/.claude-plugin/plugin.json`
   and `claude-code/.mcp.json` describe the plugin itself).

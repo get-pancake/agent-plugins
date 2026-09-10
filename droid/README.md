@@ -20,9 +20,10 @@ to `~/.factory/mcp.json` (personal) or a trusted project's `.factory/mcp.json` (
 your team). Then type `/mcp` inside Droid and authenticate `pancake` — a browser window opens
 where you sign in to Pancake the usual way and pick the workspace to connect.
 
-**2. Install the skill** — copy [`skills/pancake/`](skills/pancake/) to
-`~/.factory/skills/pancake/` (personal) or `<your-repo>/.factory/skills/` (project),
-then restart Droid so it loads.
+**2. Install the skills** — copy [`skills/pancake/`](skills/pancake/) to
+`~/.factory/skills/pancake/` (personal) or `<your-repo>/.factory/skills/` (project), and the
+three playbooks beside it the same way (`skills/pancake-daily-leads/`,
+`skills/pancake-review-leads/`, `skills/pancake-refresh-icp/`), then restart Droid so it loads.
 
 ## Manage the connection
 

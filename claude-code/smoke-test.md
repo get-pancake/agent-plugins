@@ -6,7 +6,7 @@ against a real (non-production-critical) Pancake workspace.
 ```bash
 claude plugin marketplace add ./agent-plugins   # or get-pancake/agent-plugins
 claude plugin install pancake@pancake
-claude plugin details pancake@pancake   # expect: Skills (1), MCP servers (1) pancake
+claude plugin details pancake@pancake   # expect: Skills (4), MCP servers (1) pancake
 ```
 
 Then inside a Claude Code session with the plugin enabled:

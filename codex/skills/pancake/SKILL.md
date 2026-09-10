@@ -274,6 +274,25 @@ Nothing here spends credits. Anything that grants access, handles a credential, 
 clients, accepting invitations, connecting Slack, checkout, creating or deleting the workspace — is
 deliberately not a tool: say so and point the user at Settings.
 
+## Playbooks
+
+The Pancake plugins ship three ready-made playbooks as skills beside this one, each a sequence
+of the tools above with the spend stated before anything is spent and a closing "what the human
+should look at":
+
+- `pancake-daily-leads` — find N leads today under X credits: balance and ceiling →
+  `lead_finding_preview_plan` → confirm → `lead_finding_start_plan` → poll → report the leads,
+  what was rejected and why, and what it cost.
+- `pancake-review-leads` — review last night's leads: `activity_since` from a cursor YOU keep
+  per workspace id (first run: the last 24 hours) → judge each new lead (feedback, promote,
+  disqualify) → report what changed.
+- `pancake-refresh-icp` — refresh the ICP from feedback: `brain_get` before → pending proposals
+  and recent verdicts → resolve or record market feedback → `brain_get` after and print the
+  field-level diff yourself.
+
+When the user's request matches one, follow that playbook; this skill stays the reference for each
+tool's semantics.
+
 ## What happened since your last check
 
 Do not poll `lead_finding_list_runs` or `leads_list` and diff pages to learn what changed. Call
