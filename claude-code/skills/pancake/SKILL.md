@@ -177,17 +177,21 @@ are not on this surface.
 Pancake's scheduler runs the nightly waterfall on its own. This surface can also start work on
 demand, and the unit is CREDITS. Call `lead_finding_get_spend` first: it says how many credits the
 workspace's spend ceiling still allows today and this month, how many agent-started runs remain
-allowed, and — under `connection` — this connection's own allowance and whether it (or every agent
-start, `agentStartsPaused`) is paused. In enforce mode, the smaller ceiling bounds a run;
-in shadow mode, these figures are observational. Members may lower allowances or pause/unpause;
-only operators may raise allowances. For the billing PERIOD rather than the daily ceiling — what the
-workspace has left this period and what each run cost — call `credits_get_balance`: it returns the
+allowed, under `connection` this connection's own ceiling and whether it (or every agent
+start, `agentStartsPaused`) is paused, and under `balance` the billing PERIOD balance — the
+total credits envelope. A ceiling is a per-day/per-month rail on agent-started runs, NOT the
+workspace's allowance: on a trial the default ceiling is larger than the whole period balance, so
+read `startable` — in enforce mode the smallest of the workspace ceiling, this connection's
+ceiling, and the period balance, with `boundBy` naming the rail; in shadow mode these figures
+are observational and nothing is cut. Members may lower ceilings or pause/unpause; only operators
+may raise ceilings. For what each run cost — call `credits_get_balance`: it returns the
 period's allowance, held, used, and available credits plus the latest ledger movements, each naming
 its run, pipeline, outcome, leads qualified, and the credits held, settled, and released. In shadow
-mode a negative available balance means "over allowance, not enforced yet". Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
+mode a negative available balance means "over the included credits, not enforced yet". Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
 a scope — the full waterfall or one pipeline — or an explicit split) to see how the credits would
 be spread across post-engagement, company-signal, and persona-sweep, the leads each stage is
-expected to find, and the runnable budget for the current enforcement mode; it is free. Confirm the credits
+expected to find, and the runnable budget for the current enforcement mode (`runnable.reason`
+names the rail that cut it: `ceiling`, `connection_ceiling`, `balance`, or `floor`); it is free. Confirm the credits
 with the user, then `lead_finding_start_plan` with the same arguments; it returns the head run id
 at once. Poll `lead_finding_get_run` every minute or two until status is `published` or
 `failed` — `pending` and `running` both mean wait, never that something is stuck — and never
@@ -261,7 +265,7 @@ user asks:
   pending link. Membership starts only when the invitee accepts in their browser — you cannot
   accept for them, and member removal is not on this surface.
 - `workspace_mcp_grants_list` — the agents and clients connected to the workspace, each with its
-  own credit allowance and pause state, and which entry is YOUR connection. Read only: approving a
+  own daily/monthly spend ceiling and pause state, and which entry is YOUR connection. Read only: approving a
   new client or revoking one is a member's browser action.
 - `slack_channels_list` / `slack_delivery_set` — where lead-finding results are posted and how
   (`short` | `detailed`). A `reconnect_required` listing means a member must reconnect Slack in
