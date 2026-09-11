@@ -37,6 +37,13 @@ packages is secret.
   client id below, and `codex/README.md` documents both plus a manual fallback for Codex
   versions without plugin-marketplace support. `pancake/` is the public universal directory
   package.
+- **Any other agent** (fx, Cursor, Zed, Gemini CLI, Amp, goose, Copilot CLI…) — connect the MCP
+  server with the one-line prompt from **Settings → MCP** in the Pancake app, then install the
+  four skills the same way: paste
+  `Install the Pancake skills by reading https://raw.githubusercontent.com/get-pancake/agent-plugins/main/skills.md and following its instructions.`
+  into the agent. [`skills.md`](skills.md) tells it where its skills directory is and fetches
+  each `SKILL.md` from this repo, so a re-run always picks up the current version. Humans can
+  download the same files from that page.
 - [`droid/`](droid/README.md) — Factory Droid CLI, as a manual two-step install (Droid has no
   plugin marketplace): register the MCP server (`droid mcp add` or `.factory/mcp.json`), then
   copy the skill into a `.factory/skills/` directory. Droid supports Pancake's
