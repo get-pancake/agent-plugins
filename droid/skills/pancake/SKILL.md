@@ -191,8 +191,10 @@ period's allowance, held, used, and available credits plus the latest ledger mov
 its run, pipeline, outcome, leads qualified, and the credits held, settled, and released. In shadow
 mode a negative available balance means "over the included credits, not enforced yet". Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
 a scope — the full waterfall or one pipeline — or an explicit split) to see how the credits would
-be spread across post-engagement, company-signal, and persona-sweep, the leads each stage is
-expected to find, and the runnable budget for the current enforcement mode (`runnable.reason`
+be spread across post-engagement, company-stack, company-hiring, and persona-sweep, the leads each
+stage is expected to find (a `basis` labeled `seededFrom` borrowed the retired merged company
+pipeline's history while the split pipelines are young; scope `company_signal` itself is retired
+and refused), and the runnable budget for the current enforcement mode (`runnable.reason`
 names the rail that cut it: `ceiling`, `connection_ceiling`, `balance`, or `floor`); it is free. Confirm the credits
 with the user, then `lead_finding_start_plan` with the same arguments; it returns the head run id
 at once. Poll `lead_finding_get_run` every minute or two until status is `published` or

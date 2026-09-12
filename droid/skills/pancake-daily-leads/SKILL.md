@@ -39,10 +39,12 @@ can unpause in Settings.
 `lead_finding_preview_plan` with `{"credits": E, "target": N}` (add `geographies` or a `scope`
 only if the user asked for them). Read back:
 
-- `stages` — for post-engagement, company-signal, and persona-sweep: the credits `planned`, the
-  `expectedLeads` (p25/p50/p80), `creditsPerLead`, and a `basis` saying whether the estimate comes
-  from this workspace's own runs or a fleet aggregate; a stage with `skipped: "target_met"` gets
-  nothing. `expectedLeadsTotal` and `unallocatedCredits` sum it up.
+- `stages` — for post-engagement, company-stack, company-hiring, and persona-sweep: the credits
+  `planned`, the `expectedLeads` (p25/p50/p80), `creditsPerLead`, and a `basis` saying whether the
+  estimate comes from this workspace's own runs or a fleet aggregate (a basis labeled `seededFrom`
+  borrowed the retired merged company pipeline's history while the split pipelines are young); a
+  stage with `skipped: "target_met"` gets nothing. `expectedLeadsTotal` and `unallocatedCredits`
+  sum it up.
 - `runnable.credits` — what the current enforcement mode would let through (with a `reason` and
   `resumesAt` when it is less than you asked). Use it, not the raw ceiling.
 - `nextStep`, and anything else it warns about (an unusable Brain, a paused connection).
@@ -55,7 +57,8 @@ or a smaller N. Do not silently raise the envelope.
 Before starting, tell the user in one message:
 
 > I will start a `<scope>` plan aiming for **N leads** with an envelope of **E credits**
-> (planned: post-engagement A / company-signal B / persona-sweep C). Expected leads ≈ L (p50).
+> (planned: post-engagement A / company-stack B / company-hiring C / persona-sweep D). Expected
+> leads ≈ L (p50).
 > Enforcement is `<mode>`; the workspace has V credits available this period and the ceiling
 > allows R more today. Nothing has been spent yet. Start it?
 
