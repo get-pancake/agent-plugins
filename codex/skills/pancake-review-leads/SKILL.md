@@ -72,7 +72,9 @@ Apply each verdict as it is given, not in a batch at the end, so an interrupted 
 nothing. A `lead_feedback_withdraw` reverses a verdict the user changes their mind about.
 
 If the user says "they all look fine" or "mark them all down", confirm the count once and apply
-the same verdict to each lead, naming every one in the summary.
+the same verdict to all of them in one `lead_feedback_submit_bulk` call
+(`{"personIds": [...], "verdict": "up"}`, up to 50 ids, an optional shared `comment`); it reports
+per person what was recorded, so name every one in the summary.
 
 ## 4. Report what changed
 

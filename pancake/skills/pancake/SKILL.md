@@ -91,7 +91,10 @@ judgment; the counts summarize all members.
 Only call `lead_feedback_submit` when the user asks to judge a lead or clearly confirms the
 verdict. It takes the lead's `personId`, `up` or `down`, and an optional comment. Feedback helps
 Pancake improve; it never disqualifies the lead, and an `up` on a `needs_review` lead promotes
-it to `qualified` (a `down` leaves the stage alone). `lead_feedback_withdraw`
+it to `qualified` (a `down` leaves the stage alone). For a reviewed batch — "they all look
+fine" — `lead_feedback_submit_bulk` takes up to 50 `personIds` with one verdict and an optional
+shared comment, judges each lead on its own in order, and reports per person what happened (an
+unknown id fails only its own item). `lead_feedback_withdraw`
 takes that verdict back (only the connecting member's own) — withdrawing where none exists is a
 no-op.
 
