@@ -6,9 +6,9 @@
   "author": {
     "name": "Pancake",
     "email": "hey@pancake.ai",
-    "url": "https://getpancake.ai"
+    "url": "https://pancake.ai"
   },
-  "homepage": "https://getpancake.ai",
+  "homepage": "https://pancake.ai",
   "repository": "https://github.com/get-pancake/agent-plugins",
   "keywords": ["marketing", "go-to-market", "leads", "seo", "pancake"],
   "skills": "./skills/",

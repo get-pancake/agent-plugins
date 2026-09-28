@@ -13,7 +13,7 @@
 # `codex mcp login pancake` work there.
 
 [mcp_servers.pancake]
-url = "https://app.getpancake.ai/api/mcp"
+url = "https://app.pancake.ai/api/mcp"
 
 [mcp_servers.pancake.oauth]
-client_id = "https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json"
+client_id = "https://app.pancake.ai/.well-known/mcp-clients/pancake-cli.json"

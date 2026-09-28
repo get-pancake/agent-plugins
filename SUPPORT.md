@@ -7,7 +7,7 @@ send an access token, authorization code, magic link, or other credential.
 
 ## Connection checks
 
-1. Confirm `https://app.getpancake.ai` opens normally.
+1. Confirm `https://app.pancake.ai` opens normally.
 2. Reconnect the integration and complete Pancake's browser sign-in and workspace picker.
 3. In Pancake, open **Settings → MCP → Connected clients** to confirm or revoke the connection.
 4. Retry one read-only action, such as reading the Brain, before retrying a write.

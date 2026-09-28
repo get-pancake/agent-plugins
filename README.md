@@ -53,12 +53,12 @@ packages is secret.
 
 Pancake's sign-in is a Client ID Metadata Document (CIMD) OAuth flow — no dynamic client
 registration (DCR), no API key. A client is listed as supported only once its browser sign-in
-has completed against production (`app.getpancake.ai`), through the `/connect` workspace picker,
+has completed against production (`app.pancake.ai`), through the `/connect` workspace picker,
 and a `tools/list` came back. "Static id" means the client cannot discover a client id on its
 own and must be handed Pancake's hosted one — a public URL, not a credential:
 
 ```
-https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json
+https://app.pancake.ai/.well-known/mcp-clients/pancake-cli.json
 ```
 
 | Client                                              | Setup                                               | Status               | Verified (version · date)                                                                                                                                                                                                 |
@@ -94,10 +94,10 @@ guide mirrors this table and carries the per-client snippets.
 {
   "mcpServers": {
     "pancake": {
-      "httpUrl": "https://app.getpancake.ai/api/mcp",
+      "httpUrl": "https://app.pancake.ai/api/mcp",
       "oauth": {
         "enabled": true,
-        "clientId": "https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json"
+        "clientId": "https://app.pancake.ai/.well-known/mcp-clients/pancake-cli.json"
       }
     }
   }
@@ -110,8 +110,8 @@ then `/mcp auth pancake` inside Gemini CLI.
 
 ```bash
 amp mcp oauth login pancake \
-  --server-url https://app.getpancake.ai/api/mcp \
-  --client-id https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json
+  --server-url https://app.pancake.ai/api/mcp \
+  --client-id https://app.pancake.ai/.well-known/mcp-clients/pancake-cli.json
 ```
 
 **Codex CLI ≤ 0.147** — see [`codex/README.md`](codex/README.md).
@@ -154,6 +154,6 @@ marketplace, not evidence of acceptance into OpenAI's or Anthropic's public Dire
 ## Authenticate
 
 No setup needed: the first time your tool connects it opens a browser window on
-`app.getpancake.ai` where you sign in the usual way (Google or email link) and pick the
+`app.pancake.ai` where you sign in the usual way (Google or email link) and pick the
 workspace this tool may access. Manage or disconnect standing connections anytime in
 **Settings → MCP → Connected clients**.

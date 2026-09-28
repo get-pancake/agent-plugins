@@ -3,7 +3,7 @@
   "description": "Official Pancake integrations for Claude Code and Cowork.",
   "owner": {
     "name": "Pancake",
-    "url": "https://getpancake.ai"
+    "url": "https://pancake.ai"
   },
   "plugins": [
     {

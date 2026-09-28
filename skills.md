@@ -75,4 +75,4 @@ a newer version.
    that the four appear. Loading is on demand in most clients: seeing them listed is enough.
 3. Report which directory received the skills and whether the client needs a restart. The
    skills describe how to use Pancake's tools; they do not connect the client. If Pancake's MCP
-   server is not connected yet, follow https://getpancake.ai/install.md next.
+   server is not connected yet, follow https://pancake.ai/install.md next.

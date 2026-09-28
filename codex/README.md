@@ -27,8 +27,8 @@ Codex, or keep the plugin's skill and register the server with Pancake's public 
 URL, not a credential) before logging in:
 
 ```bash
-codex mcp add pancake --url https://app.getpancake.ai/api/mcp \
-  --oauth-client-id https://app.getpancake.ai/.well-known/mcp-clients/pancake-cli.json
+codex mcp add pancake --url https://app.pancake.ai/api/mcp \
+  --oauth-client-id https://app.pancake.ai/.well-known/mcp-clients/pancake-cli.json
 codex mcp login pancake
 ```
 

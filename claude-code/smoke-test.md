@@ -32,5 +32,6 @@ Last run: 2026-08-19 — the browser OAuth flow (ADR 0055) verified end to end a
 beta.getpancake.ai with a real Claude Code client: challenge → discovery → consent → tokens →
 `ping`/tools succeed; grant visible and revocable in Settings.
 
-Repeat the full flow against `app.getpancake.ai` after the domain cutover; the beta result is not
+Repeat the full flow against `app.pancake.ai` after the PAN-1318 domain move, and confirm an install
+still configured with `app.getpancake.ai` re-authorizes through that host; the beta result is not
 evidence that the canonical-host OAuth and provider registrations work.

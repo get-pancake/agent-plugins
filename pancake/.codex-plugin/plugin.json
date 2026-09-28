@@ -5,9 +5,9 @@
   "author": {
     "name": "Pancake",
     "email": "hey@pancake.ai",
-    "url": "https://getpancake.ai"
+    "url": "https://pancake.ai"
   },
-  "homepage": "https://getpancake.ai",
+  "homepage": "https://pancake.ai",
   "repository": "https://github.com/get-pancake/agent-plugins",
   "keywords": ["marketing", "go-to-market", "leads", "seo", "pancake"],
   "skills": "./skills/",
@@ -19,9 +19,9 @@
     "developerName": "Pancake",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
-    "websiteURL": "https://getpancake.ai",
-    "privacyPolicyURL": "https://getpancake.ai/privacy",
-    "termsOfServiceURL": "https://getpancake.ai/terms",
+    "websiteURL": "https://pancake.ai",
+    "privacyPolicyURL": "https://pancake.ai/privacy",
+    "termsOfServiceURL": "https://pancake.ai/terms",
     "defaultPrompt": [
       "Use my Pancake Brain to draft on-brand LinkedIn copy.",
       "Show me the newest qualified leads in Pancake.",
