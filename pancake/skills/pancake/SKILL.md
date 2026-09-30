@@ -1,12 +1,12 @@
 ---
 name: pancake
-description: "Use Pancake over MCP: ground work in the GTM brain, review its proposals, read and judge leads, manage signals, run the SEO article workspace, administer the workspace, and see what changed."
+description: "Use Pancake over MCP: ground work in the GTM brain, manage saved Plays, review leads and proposals, run SEO and lead finding, administer the workspace, and see what changed."
 ---
 
 # Pancake
 
 You have access to a Pancake workspace over MCP: its go-to-market brain, qualified leads, signal
-settings, SEO publication plan, lead-finding runs, and the workspace's own settings.
+settings, SEO publication plan, saved Plays, lead-finding runs, and the workspace's own settings.
 
 ## Ground every deliverable in the brain first
 
@@ -177,6 +177,69 @@ draft → approve → schedule**, and `activity_since` shows the `seo.publicatio
 None of these publish to a CMS or start a drafting run; publishing targets and on-demand runs
 are not on this surface.
 
+## Saved Plays
+
+Plays are named, versioned recipes for exactly one lead-finding pipeline. Start with
+`plays_list`, then `plays_get` before changing or running one. The Play carries its selected
+pipeline and its own targeting: a new Play copies every field you omit from what the workspace runs
+today (the Brain, the signal settings, the tracked own brand) and keeps that copy, so a later Brain
+edit never changes it; pains and objections stay the Brain's. A `post_watchlist` Play names each
+page it watches in `watchlist` (`{role, name, url}`: competitor, influencer, or own_brand).
+The `plays_list`, `plays_get`, and
+`plays_create` views carry `readiness` for the Play's signal source (ready or blocked, with
+the remedy) and `activeRun` — the run already queued or running for that Play, or `null`.
+
+- To create a Play for a goal ("meetings with CTOs looking for a code review tool"), call
+  `plays_plan` first — one free call. Pass the member's words as `intent`; the server returns
+  either a `proposal` with a normalized audience Definition, the compiler's chosen strategy,
+  ranked p25–p80 credit bands and known-audience shares, or one concrete clarification question.
+  The same response returns, per pipeline, a summary of who it finds,
+  `readiness` with the exact remedy when blocked, `inherits` (what a new Play copies from the
+  Brain and signal settings), `overridable` versus `fixed` fields, a credit
+  `estimate`, an `explain` block (a p25–p80 estimated credit `band` — recorded spend is
+  an upper bound — plus `knownShare`, the fraction of the audience the workspace already knows
+  and need not re-buy, plus `gates`, one per pivot of the plan's step chain: the cardinality
+  estimate a run's measurement gate checks the step's real output against — `at`, `entity`,
+  `bound`, `expected` p25–p80, `basis` — and empty for a single-step plan), and a
+  `candidate` for `plays_create`. Show the normalized audience,
+  assumptions, chosen strategy, and band to the user, then create only after confirmation. If the
+  proposal asks a clarification, ask it and call `plays_plan` again with the answer.
+- `plays_create` saves a new Play and creates its permanent campaign association. Choose exactly
+  one of `post_watchlist`, `post_keyword`, `company_stack`, `company_hiring`, or
+  `persona_sweep`. With an `input`, `target` (1–50) sets the new leads per run the Play is saved
+  with (default 10). Its
+  `nextStep` names the campaign. The outreach objective is optional and belongs to the LinkedIn
+  account the Play sends from; set it with `campaign_set_objective` only when the user described
+  one. `sizeBand` crosses this surface as `{min, max}`.
+- `plays_update` replaces the complete name, pipeline, and input under the exact `revision` from
+  `plays_get`. Preserve fields the user did not ask to change. `plays_delete` soft-deletes a Play
+  under the same revision rule; its history and Lead attribution remain. Main cannot be deleted.
+- Every Play also carries a `definition` — `{audience, policy}`: typed audience constraints over
+  `person.*` / `company.*` / `employment.*` fields, and a policy with `target.newToPlay`, an
+  optional `envelope.creditsPerPeriod` (a ceiling inside the workspace allowance), `freshness`
+  rails, `stop` rules, and `fallback`, the ORDERED list of strategy instances the nightly chain
+  walks (Main's default is post watchlist → post keyword → company stack → company hiring →
+  persona sweep). The `input` override is the shorthand: it constructs the definition, and an
+  `input` update keeps the policy and edits only that pipeline's instance. To change the nightly
+  order, the target, or the envelope, send a `definition` to `plays_create` / `plays_update`
+  (read Main with `plays_get` for the shape; `selectedPipeline` must name one of its
+  instances). Every instance must be one of the five canonical pipelines today.
+- Before `plays_run`, read `plays_get`: its `readiness` says whether the selected source can
+  run (fix the remedy first when blocked), and a non-null `activeRun` means a run is already
+  queued or running for that Play — `plays_run` is refused while one exists, so read that run
+  with `lead_finding_get_run` instead of starting another. Then read `lead_finding_get_spend`
+  for the period balance, workspace ceiling, this connection's ceiling, pauses, and volume limits.
+  Confirm the credit envelope with the user. `plays_run` accepts only
+  the saved `playId`, `credits`, and an optional bounded lead `target` — never a pipeline or
+  ad-hoc input override — and starts exactly that saved Play revision. Poll the returned `runId`
+  with `lead_finding_get_run`; read its Play identity, credits, rejections, and `advice` before
+  proposing another run. A retry with the same MCP request id returns the durable original run.
+  `lead_finding_list_runs` takes an optional `playId` for one Play's history.
+
+An archived or otherwise inactive Play is not runnable. Stack and hiring Plays also require their
+matching signal setting to be active and usable; inline Play values refine an active source but do
+not turn one on.
+
 ## Lead-finding runs
 
 Pancake's scheduler runs the nightly waterfall on its own. This surface can also start work on
@@ -212,8 +275,9 @@ Every `lead_finding_get_run` answer also carries a `report` written for you: `cr
 ledger charged the run and its waterfall hops — `null` when the ledger never saw it, never a
 made-up zero — plus the document's spend in credits and the chain envelope), `rejections` (counts
 per reason with a plain-language `meaning`, and up to ten named examples), `stopped` (why it
-ended: `budget`, `deadline`, `lead_limit`, `sources_dry`, `error`, or `cancelled`, and where
-that came from), `chain` (the waterfall's hops and the stage's decision), `origin`, and `advice`
+ended: `budget`, `deadline`, `lead_limit`, `sources_dry`, `error`, `cancelled`,
+`judge_unavailable`, or `gate` — a measurement gate parked the run at a pivot because the
+envelope could not afford the next step — and where that came from), `chain` (the waterfall's hops and the stage's decision), `origin`, and `advice`
 — deterministic next steps: a wall of hard vetoes means the sources are off (review signal
 settings, keywords, competitors); a wall of low ICP scores means the bar is high (review the ICP
 in the Brain or accept `needs_review` leads); enrichment or judge failures mean a provider issue
@@ -245,8 +309,8 @@ exactly what to do and poll it every minute or two.
 
 The unattended schedule is the member's choice. `lead_finding_schedule_get` reports its `mode`:
 `daily`, `weekdays` (Monday–Friday in the workspace's timezone), `weekly` (with a `weekday`,
-0 = Sunday), `off`, or `agent`. `lead_finding_schedule_set` changes it — only when the user
-asks. `agent` means Pancake's scheduler stands down and you decide when to look for leads by
+0 = Sunday), `days` (custom days: a `weekdays` list, 0 = Sunday), `off`, or `agent`.
+`lead_finding_schedule_set` changes it — only when the user asks. `agent` means Pancake's scheduler stands down and you decide when to look for leads by
 calling `lead_finding_start_plan` yourself; no morning digest is sent on days without a run. Switching back to a cadence resumes from the next occurrence and never
 backfills missed days. Pass `localTime` (`HH:MM`) to move the start; omit it to keep the current
 time, or, for a workspace with no schedule yet, Pancake's overnight slot so results are ready for
