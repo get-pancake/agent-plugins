@@ -60,16 +60,18 @@ Present one lead at a time — name, title, company, `fit` and its reason, `warm
   as `comment` when they gave one.
 - **Not a fit** → `lead_feedback_submit` `{"personId", "verdict": "down", "comment": <why>}`. Ask
   for the reason: a criterion-naming comment ("consultancies are out", "too senior") is what
-  the improvement loop turns into an ICP proposal. A down verdict does not remove the lead.
+  the improvement loop turns into an ICP proposal. A down verdict rejects the lead for the whole
+  workspace: it leaves every member's list and any live outreach at it stops.
 - **Promote** (only for a lead whose `stage` is `needs_review`) → `lead_promote_from_review`
   `{"leadId"}` — it becomes `qualified`, counted, and deliverable.
 - **Remove** → `leads_get` first for the exact `version`, then `lead_disqualify`
-  `{"personId", "expectedVersion"}`. Confirm explicitly before this one: there is no undo on this
-  surface, and it stops live outreach at that lead.
+  `{"personId", "expectedVersion"}`: the same removal without a verdict. Confirm explicitly
+  before this one: it stops live outreach at that lead, and a restore does not restart it.
 - **Skip** → leave it; it stays unjudged for next time.
 
 Apply each verdict as it is given, not in a batch at the end, so an interrupted session loses
-nothing. A `lead_feedback_withdraw` reverses a verdict the user changes their mind about.
+nothing. A `lead_feedback_withdraw` reverses a verdict the user changes their mind about, and
+restores a rejected lead for everyone.
 
 If the user says "they all look fine" or "mark them all down", confirm the count once and apply
 the same verdict to all of them in one `lead_feedback_submit_bulk` call

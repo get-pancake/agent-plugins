@@ -90,13 +90,14 @@ judgment; the counts summarize all members.
 
 Only call `lead_feedback_submit` when the user asks to judge a lead or clearly confirms the
 verdict. It takes the lead's `personId`, `up` or `down`, and an optional comment. Feedback helps
-Pancake improve; it never disqualifies the lead, and an `up` on a `needs_review` lead promotes
-it to `qualified` (a `down` leaves the stage alone). For a reviewed batch — "they all look
+Pancake improve, and it decides the lead for the whole workspace: a `down` disqualifies it for
+every member and stops any live outreach at it, an `up` makes a `needs_review` or
+`disqualified` lead `qualified`. The latest decision wins. For a reviewed batch — "they all look
 fine" — `lead_feedback_submit_bulk` takes up to 50 `personIds` with one verdict and an optional
 shared comment, judges each lead on its own in order, and reports per person what happened (an
 unknown id fails only its own item). `lead_feedback_withdraw`
-takes that verdict back (only the connecting member's own) — withdrawing where none exists is a
-no-op.
+takes the connecting member's verdict back and restores a rejected lead: it goes back to
+`qualified` for everyone and every `down` on it is removed — nothing to undo is a no-op.
 
 A lead whose `stage` is `needs_review` is a weak match a run parked for a human: it is not
 counted, delivered, or enrollable until someone decides. When the user has looked at it and wants
@@ -104,7 +105,7 @@ it in, an `up` through `lead_feedback_submit` promotes it, or `lead_promote_from
 lead id moves it to `qualified` without recording a judgment; any other stage is refused with
 the current stage named. `lead_disqualify` is the explicit removal (it takes the
 lead's `personId` and its exact `version` from `leads_get`, and stops live outreach at that lead)
-— always confirm first; there is no undo here.
+— always confirm first; `lead_feedback_withdraw` restores the lead, but not its outreach.
 
 ## Signal settings
 
