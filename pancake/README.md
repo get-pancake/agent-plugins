@@ -14,7 +14,7 @@ plus three playbook skills — `pancake-daily-leads`, `pancake-review-leads`, an
 - SEO article briefs, content revisions, approvals, scheduling, and history.
 - Requested Brain and signal-setting updates, proposal review, and reversible Brain item management.
 - Workspace settings, member invitations, Slack delivery settings, and billing information.
-- Campaign status and explicitly requested changes, including real LinkedIn outreach on enrollment.
+- Each Play's LinkedIn sequence: status and explicitly requested changes, including real LinkedIn outreach on enrollment.
 
 Lead-finding runs consume credits: preview the cost and get explicit confirmation before starting.
 Tools cannot directly publish to a CMS, purchase a plan, approve OAuth grants, or connect Slack.

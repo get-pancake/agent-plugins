@@ -1,7 +1,7 @@
 # Pancake agent plugins
 
 Installable packages that connect a coding agent to your Pancake workspace's MCP server —
-working with your GTM Brain, leads, signals, SEO articles, campaigns, and workspace settings.
+working with your GTM Brain, leads, signals, SEO articles, LinkedIn outreach, and workspace settings.
 Authentication is a **browser sign-in** (OAuth): your tool opens Pancake's login, you pick the
 workspace to connect, and you're done — there is no API key to copy, and nothing in these
 packages is secret.

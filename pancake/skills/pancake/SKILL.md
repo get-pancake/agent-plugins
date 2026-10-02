@@ -122,9 +122,12 @@ them with their ids; `tracked_profile_add` tracks a URL with a label and a `kind
 the URL — re-adding updates label and kind); `tracked_profile_remove` takes an id. Changing the
 watchlist changes what the next lead-finding run collects, so do it only when the user asks.
 
-## Campaigns and public research
+## A Play's LinkedIn sequence and public research
 
-Start campaign work with `campaign_get_overview` and `campaign_get_sender_status`.
+Every Play has one LinkedIn sequence. The tools call it a campaign (`campaign_*`,
+`campaignId`). Say "the Play" or "its sequence" to the user, never "campaign".
+
+Start sequence work with `campaign_get_overview` and `campaign_get_sender_status`.
 `campaign_list_leads` returns bounded pages; `campaign_get_lead` and
 `campaign_get_lead_activity` explain one enrolled lead and its history.
 
@@ -205,11 +208,11 @@ the remedy) and `activeRun` — the run already queued or running for that Play,
   `candidate` for `plays_create`. Show the normalized audience,
   assumptions, chosen strategy, and band to the user, then create only after confirmation. If the
   proposal asks a clarification, ask it and call `plays_plan` again with the answer.
-- `plays_create` saves a new Play and creates its permanent campaign association. Choose exactly
+- `plays_create` saves a new Play and creates its own LinkedIn sequence. Choose exactly
   one of `post_watchlist`, `post_keyword`, `company_stack`, `company_hiring`, or
   `persona_sweep`. With an `input`, `target` (1–50) sets the new leads per run the Play is saved
   with (default 10). Its
-  `nextStep` names the campaign. The outreach objective is optional and belongs to the LinkedIn
+  `nextStep` names the sequence. The outreach objective is optional and belongs to the LinkedIn
   account the Play sends from; set it with `campaign_set_objective` only when the user described
   one. `sizeBand` crosses this surface as `{min, max}`.
 - `plays_update` replaces the complete name, pipeline, and input under the exact `revision` from
@@ -374,7 +377,7 @@ tool's semantics.
 
 Do not poll `lead_finding_list_runs` or `leads_list` and diff pages to learn what changed. Call
 `activity_since` instead: it returns the workspace trail in order — runs started, completed,
-failed, or cancelled; credits held, refused, or settled and ceiling changes; campaign connections
+failed, or cancelled; credits held, refused, or settled and ceiling changes; sequence connections
 and replies; sender disconnects; Brain revisions and proposals; SEO publication events — from an
 opaque cursor. Store the `nextCursor` it returns (it is returned even when nothing happened) and
 pass it back as `cursor` on your next check; omit it only the first time. Every event carries a

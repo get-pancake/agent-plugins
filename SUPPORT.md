@@ -1,7 +1,7 @@
 # Pancake agent plugin support
 
 For installation, connection, privacy, or product help, email
-[support@pancake.ai](mailto:support@pancake.ai). Include the client you are using (ChatGPT, Codex, Claude,
+[hey@pancake.ai](mailto:hey@pancake.ai). Include the client you are using (ChatGPT, Codex, Claude,
 or another MCP client), the approximate time of the failure, and the visible error message. Never
 send an access token, authorization code, magic link, or other credential.
 
