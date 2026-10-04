@@ -63,7 +63,8 @@ Present one lead at a time — name, title, company, `fit` and its reason, `warm
   the improvement loop turns into an ICP proposal. A down verdict rejects the lead for the whole
   workspace: it leaves every member's list and any live outreach at it stops.
 - **Promote** (only for a lead whose `stage` is `needs_review`) → `lead_promote_from_review`
-  `{"leadId"}` — it becomes `qualified`, counted, and deliverable.
+  `{"leadId"}` — it becomes `qualified` (a strong match), counted, and
+  deliverable.
 - **Remove** → `leads_get` first for the exact `version`, then `lead_disqualify`
   `{"personId", "expectedVersion"}`: the same removal without a verdict. Confirm explicitly
   before this one: it stops live outreach at that lead, and a restore does not restart it.

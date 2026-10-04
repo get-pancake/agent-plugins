@@ -5,7 +5,7 @@ description: "Use Pancake over MCP: ground work in the GTM brain, manage saved P
 
 # Pancake
 
-You have access to a Pancake workspace over MCP: its go-to-market brain, qualified leads, signal
+You have access to a Pancake workspace over MCP: its go-to-market brain, leads, signal
 settings, SEO publication plan, saved Plays, lead-finding runs, and the workspace's own settings.
 
 ## Ground every deliverable in the brain first
@@ -79,10 +79,14 @@ proposes the change for review.
 ## Reading leads and submitting feedback
 
 Use `leads_list` for a bounded, newest-first page and follow its `nextOffset` to continue. Use
-`leads_get` with a returned lead id when you need the full detail. A lead reports two different
-signals of quality:
+`leads_get` with a returned lead id when you need the full detail. Every lead has a `stage`:
+`qualified` (a strong match), `needs_review` (a weak match that waits for a member), or
+`disqualified` (a member rejected or removed it). By default `leads_list` lists the first two,
+so its `totalCount` is the number of leads the member works from, not only the strong matches.
+The app does not show the stage: the member sees `qualified` and `needs_review` leads in the
+same list. Say "leads" to the member, and name a strong match only when the stage matters. A lead reports two different signals of quality:
 
-- `fit` is the ICP judgment made when the lead was qualified.
+- `fit` is the ICP judgment a run made when it found the person.
 - `warmness` is a current, time-decaying measure of observed engagement.
 
 `originSignal` says what first surfaced the person. `feedback.mine` is this key owner's latest
@@ -92,7 +96,7 @@ Only call `lead_feedback_submit` when the user asks to judge a lead or clearly c
 verdict. It takes the lead's `personId`, `up` or `down`, and an optional comment. Feedback helps
 Pancake improve, and it decides the lead for the whole workspace: a `down` disqualifies it for
 every member and stops any live outreach at it, an `up` makes a `needs_review` or
-`disqualified` lead `qualified`. The latest decision wins. For a reviewed batch — "they all look
+`disqualified` lead `qualified` (a strong match). The latest decision wins. For a reviewed batch — "they all look
 fine" — `lead_feedback_submit_bulk` takes up to 50 `personIds` with one verdict and an optional
 shared comment, judges each lead on its own in order, and reports per person what happened (an
 unknown id fails only its own item). `lead_feedback_withdraw`
@@ -211,7 +215,8 @@ the remedy) and `activeRun` — the run already queued or running for that Play,
 - `plays_create` saves a new Play and creates its own LinkedIn sequence. Choose exactly
   one of `post_watchlist`, `post_keyword`, `company_stack`, `company_hiring`, or
   `persona_sweep`. With an `input`, `target` (1–50) sets the new leads per run the Play is saved
-  with (default 10). Its
+  with (default 10). Only leads in stage `qualified` (a strong match) count toward it; a
+  `needs_review` lead does not. Its
   `nextStep` names the sequence. The outreach objective is optional and belongs to the LinkedIn
   account the Play sends from; set it with `campaign_set_objective` only when the user described
   one. `sizeBand` crosses this surface as `{min, max}`.
@@ -258,7 +263,8 @@ ceiling, and the period balance, with `boundBy` naming the rail; in shadow mode 
 are observational and nothing is cut. Members may lower ceilings or pause/unpause; only operators
 may raise ceilings. For what each run cost — call `credits_get_balance`: it returns the
 period's allowance, held, used, and available credits plus the latest ledger movements, each naming
-its run, pipeline, outcome, leads qualified, and the credits held, settled, and released. In shadow
+its run, pipeline, outcome, `leadsQualified` (how many leads the run put in stage `qualified`),
+and the credits held, settled, and released. In shadow
 mode a negative available balance means "over the included credits, not enforced yet". Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
 a scope — the full waterfall or one pipeline — or an explicit split) to see how the credits would
 be spread across post-watchlist, post-keyword, company-stack, company-hiring, and persona-sweep, the

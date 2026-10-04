@@ -11,7 +11,9 @@ scheduler runs overnight, on demand, and never spends more than the number the u
 It needs the `pancake` skill's conventions and a connected workspace; every step is an MCP tool
 call and nothing here needs the Pancake app.
 
-Inputs: **N** (qualified leads to aim for, 1–50; default 10) and **X** (the credit envelope).
+Inputs: **N** (leads to aim for, 1–50; default 10) and **X** (the credit envelope). Only a new
+lead in stage `qualified` (a strong match) counts toward N: a person who
+was already a lead, and a lead that waits for review (`needs_review`), do not count.
 If the user gave only one, ask for the other before spending anything.
 
 ## 1. Read what the workspace can spend — free
@@ -77,8 +79,8 @@ stuck. A waterfall runs its stages one after another under the same envelope; th
 
 From the final `lead_finding_get_run` (add `include: "rejected"` for the retired people):
 
-1. **Found**: how many leads qualified against N, and the first page of people — name, title,
-   company, `fit`, and the signal that surfaced them.
+1. **Found**: how many leads the run put in stage `qualified` (a strong match) against N, and
+   the first page of people — name, title, company, `fit`, and the signal that surfaced them.
 2. **Spent**: `report.credits` — what the ledger charged the run and its hops against E. Say
    plainly whether it stayed inside E (it must; if the ledger shows more, report that as a
    discrepancy rather than explaining it away).
