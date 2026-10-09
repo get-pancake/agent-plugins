@@ -151,9 +151,11 @@ with them, so you read and change their place in that sequence only.
 `campaign_add_lead` starts real LinkedIn outreach. Do not infer permission to enroll from a
 request to inspect or qualify leads: require an explicit request for outreach to that lead.
 `campaign_remove_lead` stops that lead's outreach in the sequence named by `campaignId` and
-retains history; their place in any other Play's sequence is untouched. `campaign_pause` and
-`campaign_resume` pause and resume the whole Play, as its Pause in Pancake does: its sequence
-and its scheduled searches. Use these writes only when explicitly requested.
+retains history; their place in any other Play's sequence is untouched. `plays_pause` and
+`plays_resume` pause and resume the whole Play, as its Pause in Pancake does: its sequence
+and its scheduled searches. They take the Play's `playId`, Main included: when it is not
+clear which Play the user means, ask. `campaign_pause` and `campaign_resume` are the older
+form, by `campaignId`. Use these writes only when explicitly requested.
 Connecting a sender stays in the browser. Sequences have no objective, and Pancake never answers a
 prospect itself: a reply ends that person's sequence, Pancake tells the member, and the member
 answers on LinkedIn.
