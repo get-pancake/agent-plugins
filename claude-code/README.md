@@ -1,18 +1,8 @@
 # Pancake — Claude Code plugin
 
-Gives Claude Code direct, workspace-scoped access to a Pancake account: managing the GTM Brain,
-leads, signals, SEO articles, LinkedIn outreach, lead-finding runs, and workspace settings through Pancake's MCP server, plus
-the operating conventions in [`pancake`](skills/pancake/SKILL.md) — the same
-skill a member can already download from **Settings → MCP** in the app, generated (not
-hand-written) here; see [`../README.md`](../README.md) — and three playbook skills:
-[`pancake-daily-leads`](skills/pancake-daily-leads/SKILL.md) (find N leads today under X
-credits), [`pancake-review-leads`](skills/pancake-review-leads/SKILL.md) (judge what came in
-since your last check), and [`pancake-refresh-icp`](skills/pancake-refresh-icp/SKILL.md)
-(resolve Brain proposals and feedback, then show the diff).
+Gives Claude Code direct, workspace-scoped access to a Pancake account: managing the GTM Brain, leads, signals, LinkedIn outreach, lead-finding runs, and workspace settings through Pancake's MCP server, plus the operating conventions in [`pancake`](skills/pancake/SKILL.md) — the same skill a member can already download from **Settings → MCP** in the app, generated (not hand-written) here; see [`../README.md`](../README.md) — and three playbook skills: [`pancake-daily-leads`](skills/pancake-daily-leads/SKILL.md) (find N leads today under X credits), [`pancake-review-leads`](skills/pancake-review-leads/SKILL.md) (judge what came in since your last check), and [`pancake-refresh-icp`](skills/pancake-refresh-icp/SKILL.md) (resolve Brain proposals and feedback, then show the diff).
 
-Lead-finding runs consume credits: preview the cost and get explicit confirmation before starting.
-Enrolling a lead starts real LinkedIn outreach and requires an explicit request.
-The tools can edit, approve, and schedule SEO articles, but cannot directly publish to a CMS.
+Lead-finding runs consume credits: preview the cost and get explicit confirmation before starting. Enrolling a lead starts real LinkedIn outreach and requires an explicit request.
 
 This same plugin directory also installs directly into **Codex CLI** — see
 [`../codex/README.md`](../codex/README.md).

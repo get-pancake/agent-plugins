@@ -1,7 +1,7 @@
 {
   "name": "pancake",
   "version": "0.3.0",
-  "description": "Connect ChatGPT and Codex to your Pancake workspace: GTM Brain, leads, signals, SEO articles, LinkedIn outreach, and workspace settings.",
+  "description": "Connect ChatGPT and Codex to your Pancake workspace: GTM Brain, leads, signals, LinkedIn outreach, and workspace settings.",
   "author": {
     "name": "Pancake",
     "email": "hey@pancake.ai",
@@ -9,13 +9,13 @@
   },
   "homepage": "https://pancake.ai",
   "repository": "https://github.com/get-pancake/agent-plugins",
-  "keywords": ["marketing", "go-to-market", "leads", "seo", "pancake"],
+  "keywords": ["marketing", "go-to-market", "leads", "pancake"],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Pancake",
-    "shortDescription": "Bring your GTM Brain, leads, signals, and SEO plan into ChatGPT and Codex.",
-    "longDescription": "Connect your Pancake workspace to ChatGPT and Codex. Ground marketing work in your GTM Brain, manage leads, signals, SEO articles, LinkedIn outreach, and workspace settings when asked. Lead-finding runs require a credit preview and explicit confirmation; enrolling a lead starts real LinkedIn outreach. Access is limited to the workspace you select during Pancake's browser sign-in.",
+    "shortDescription": "Bring your GTM Brain, leads, signals, and LinkedIn outreach into ChatGPT and Codex.",
+    "longDescription": "Connect your Pancake workspace to ChatGPT and Codex. Ground marketing work in your GTM Brain, manage leads, signals, LinkedIn outreach, and workspace settings when asked. Lead-finding runs require a credit preview and explicit confirmation; enrolling a lead starts real LinkedIn outreach. Access is limited to the workspace you select during Pancake's browser sign-in.",
     "developerName": "Pancake",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
@@ -25,7 +25,7 @@
     "defaultPrompt": [
       "Use my Pancake Brain to draft on-brand LinkedIn copy.",
       "Show me the leads I have to review in Pancake.",
-      "Review my upcoming SEO publication plan."
+      "Find 20 new leads for my main Play in Pancake."
     ],
     "brandColor": "#2C002A",
     "composerIcon": "./assets/pancake.svg",

@@ -319,9 +319,9 @@ then (email is unaffected). Read it before changing anything below, and change s
 the user asks:
 
 - `workspace_update` — name, icon (`null` clears), timezone. A timezone change retimes EVERY
-  unattended schedule (lead finding, the Brain improvement run, SEO planning and visibility, the
-  08:30 digest) to the same local times in the new zone; the result lists each schedule's next run
-  so you can confirm the new rhythm to the user.
+  unattended schedule (lead finding, the Brain improvement run, the 08:30 digest) to the same
+  local times in the new zone; the result lists each schedule's next run so you can confirm the
+  new rhythm to the user.
 - `workspace_notifications_set` — the email digest on/off and `daily` | `weekly`, both fields
   every time (an atomic replace). This is workspace state shared by every member.
 - `workspace_members_list` — members (name, email, joined) and pending invitations; also the
@@ -369,12 +369,12 @@ tool's semantics.
 Do not poll `lead_finding_list_runs` or `leads_list` and diff pages to learn what changed. Call
 `activity_since` instead: it returns the workspace trail in order — runs started, completed,
 failed, or cancelled; credits held, refused, or settled and ceiling changes; sequence connections
-and replies; sender disconnects; Brain revisions and proposals; SEO publication events — from an
-opaque cursor. Store the `nextCursor` it returns (it is returned even when nothing happened) and
-pass it back as `cursor` on your next check; omit it only the first time. Every event carries a
+and replies; sender disconnects; Brain revisions and proposals — from an opaque cursor. Store
+the `nextCursor` it returns (it is returned even when nothing happened) and pass it back as
+`cursor` on your next check; omit it only the first time. Every event carries a
 `meaning` line naming the follow-up call — a run completed points at `lead_finding_get_run`,
 credits refused or a ceiling change at `lead_finding_get_spend`, the balance low or exhausted
 (`credits.balance.low` / `credits.balance.exhausted`) at `credits_get_balance`, a reply at
 `campaign_get_lead_activity`, a sender disconnect at `campaign_get_sender_status`, a Brain
 change at `brain_get`. Narrow with `kinds` (exact event kinds) or `contexts` (leads, credits,
-campaigns, strategy, seo, mcp, onboarding, slack); a filtered page is still a full page.
+campaigns, strategy, mcp, onboarding, slack); a filtered page is still a full page.
