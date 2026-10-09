@@ -24,7 +24,7 @@
     "termsOfServiceURL": "https://pancake.ai/terms",
     "defaultPrompt": [
       "Use my Pancake Brain to draft on-brand LinkedIn copy.",
-      "Show me the newest qualified leads in Pancake.",
+      "Show me the leads I have to review in Pancake.",
       "Review my upcoming SEO publication plan."
     ],
     "brandColor": "#2C002A",
