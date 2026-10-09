@@ -48,8 +48,10 @@ haul; `report.rejections` and `report.stopped` explain what did not make it. Run
 share a `chainId` — present them as one night, not three runs.
 
 Then `leads_list` (first page, newest first) to pick up the stage each lead is in now and its
-`feedback.mine`. Review only leads that are new since the cursor and not yet judged by this member;
-say how many that is before starting.
+`feedback.mine`. Start from its `leadCounts`: say each Play's To review count with the Play's name
+("Main: 41 to review") before you list anyone, and never add the Plays together. Review only leads
+that are new since the cursor and not yet judged by this member; say how many that is before
+starting.
 
 ## 3. Judge each lead with the user
 

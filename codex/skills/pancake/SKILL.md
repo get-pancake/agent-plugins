@@ -83,10 +83,18 @@ proposes the change for review.
 Use `leads_list` for a bounded, newest-first page and follow its `nextOffset` to continue. Use
 `leads_get` with a returned lead id when you need the full detail. Every lead has a `stage`:
 `qualified` (a strong match), `needs_review` (a weak match that waits for a member), or
-`disqualified` (a member rejected or removed it). By default `leads_list` lists the first two,
-so its `totalCount` is the number of leads the member works from, not only the strong matches.
+`disqualified` (a member rejected or removed it). By default `leads_list` lists the first two.
 The app does not show the stage: the member sees `qualified` and `needs_review` leads in the
-same list. Say "leads" to the member, and name a strong match only when the stage matters. A lead reports two different signals of quality:
+same list. Say "leads" to the member, and name a strong match only when the stage matters.
+
+Read the lead counts first. Every `leads_list` answer carries `leadCounts`: one entry per Play,
+with the Play's name and the counts its Leads page shows to this member, under the same tab names:
+All, To review, In sequence, Rejected. Answer every "how many" question from `leadCounts`, never by
+counting items or pages, and give the numbers Play by Play with the Play's name ("Main: 41 to
+review"). No screen adds the Plays together: never give a sum over the Plays, never call a number
+a total, and never add numbers into a group the app does not show. Pass `playId` for one Play.
+
+A lead reports two different signals of quality:
 
 - `fit` is the ICP judgment a run made when it found the person.
 - `warmness` is a current, time-decaying measure of observed engagement.

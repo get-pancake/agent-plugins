@@ -91,7 +91,9 @@ From the final `lead_finding_get_run` (add `include: "rejected"` for the retired
    `cancelled`, and what that says about the next run.
 5. **Advice**: `report.advice` verbatim. An empty `advice` means the run met its target.
 
-Then `credits_get_balance` once more and quote the new `availableCredits`.
+Then `credits_get_balance` once more and quote the new `availableCredits`, and `leads_list`
+(`limit: 1`) for its `leadCounts`: say each Play's To review count with the Play's name, as the
+member will find it on that Play's Leads page. Never add the Plays together.
 
 ## What the human should look at
 
