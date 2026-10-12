@@ -228,6 +228,15 @@ An archived or otherwise inactive Play is not runnable. Stack and hiring Plays a
 matching signal setting to be active and usable; inline Play values refine an active source but do
 not turn one on.
 
+A Play whose search Pancake writes (its `search` is not null) has settings instead of an editable
+pipeline input. Read them with `plays_get_search`, preview a change with
+`plays_preview_search_settings` and tell the member its `impact.message` before saving with
+`plays_save_search_settings` (send the complete settings and the `tokens` you read). The search
+in use keeps running: a compatible change then needs a sample and a structural one a new search
+(`plays_prepare_search`, which uses credits); `plays_confirm_search` samples, then uses, exactly
+the candidate you read. `plays_list_search_history` and `plays_restore_search` bring back a past
+search. Take each paid or activating step only when the member asks.
+
 ## Lead-finding runs
 
 Pancake's scheduler runs the nightly waterfall on its own. This surface can also start work on
