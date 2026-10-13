@@ -201,7 +201,7 @@ the remedy) and `activeRun` — the run already queued or running for that Play,
   under the same revision rule; its history and Lead attribution remain. Main cannot be archived.
 - Every Play also carries a `definition` — `{audience, policy}`: typed audience constraints over
   `person.*` / `company.*` / `employment.*` fields, and a policy with `target.newToPlay`, an
-  optional `envelope.creditsPerPeriod` (a ceiling inside the workspace allowance), `freshness`
+  optional `envelope.creditsPerPeriod` (a limit inside the workspace's monthly credits), `freshness`
   rails, `stop` rules, and `fallback`, the ORDERED list of strategy instances the nightly chain
   walks (Main's default is post watchlist → post keyword → company stack → company hiring →
   persona sweep). The `input` override is the shorthand: it constructs the definition, and an
@@ -213,8 +213,8 @@ the remedy) and `activeRun` — the run already queued or running for that Play,
   run (fix the remedy first when blocked), and a non-null `activeRun` means a run is already
   queued or running for that Play — `plays_run` is refused while one exists, so read that run
   with `lead_finding_get_run` instead of starting another. Then read `lead_finding_get_spend`
-  for the period balance, workspace ceiling, this connection's ceiling, pauses, and volume limits.
-  Confirm the credit envelope with the user. `plays_run` accepts only
+  for the workspace's credits and volume limits. Confirm the credits with the user.
+  `plays_run` accepts only
   the saved `playId`, `credits`, and an optional bounded lead `target` — never a pipeline or
   ad-hoc input override — and starts exactly that saved Play revision. Poll the returned `runId`
   with `lead_finding_get_run`; read its Play identity, credits, rejections, and `advice` before
@@ -231,34 +231,34 @@ pipeline input. Read them with `plays_get_search`, preview a change with
 `plays_preview_search_settings` and tell the member its `impact.message` before saving with
 `plays_save_search_settings` (send the complete settings and the `tokens` you read). The search
 in use keeps running: a compatible change then needs a sample and a structural one a new search
-(`plays_prepare_search`, which uses credits); `plays_confirm_search` samples, then uses, exactly
-the candidate you read. `plays_list_search_history` and `plays_restore_search` bring back a past
+(`plays_prepare_search`; writing and checking a search cost no credits, only the searches it
+then runs do); `plays_confirm_search` samples, then uses, exactly the candidate you read. `plays_list_search_history` and `plays_restore_search` bring back a past
 search. Take each paid or activating step only when the member asks.
 
 ## Lead-finding runs
 
 Pancake's scheduler runs the nightly waterfall on its own. This surface can also start work on
-demand, and the unit is CREDITS. Call `lead_finding_get_spend` first: it says how many credits the
-workspace's spend ceiling still allows today and this month, how many agent-started runs remain
-allowed, under `connection` this connection's own ceiling and whether it (or every agent
-start, `agentStartsPaused`) is paused, and under `balance` the billing PERIOD balance — the
-total credits envelope. A ceiling is a per-day/per-month rail on agent-started runs, NOT the
-workspace's allowance: on a trial the default ceiling is larger than the whole period balance, so
-read `startable` — in enforce mode the smallest of the workspace ceiling, this connection's
-ceiling, and the period balance, with `boundBy` naming the rail; in shadow mode these figures
-are observational and nothing is cut. Members may lower ceilings or pause/unpause; only operators
-may raise ceilings. For what each run cost — call `credits_get_balance`: it returns the
-period's allowance, held, used, and available credits plus the latest ledger movements, each naming
-its run, pipeline, outcome, `leadsQualified` (how many leads the run put in stage `qualified`),
-and the credits held, settled, and released. In shadow
-mode a negative available balance means "over the included credits, not enforced yet". Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
+demand, and the unit is CREDITS: a search reserves credits when it starts (up to its cap), is
+charged what its research actually cost — in credits, summed over the search and rounded down —
+and the rest of the reservation comes back; a work email found costs 50, and a
+lookup that finds none is free. Creating, editing and testing a Play cost nothing. An estimate or
+a reservation is never the charge, and credits never buy a number of leads. Call
+`lead_finding_get_spend` first: `balance` has the available credits, the credits running
+searches reserve, this month's allowance and when the cycle ends, `startable` the credits a start
+may reserve right now when credits are enforced, plus how many agent-started runs remain allowed
+today and concurrently. For what each run cost — call `credits_get_balance`: it returns the
+balance, the current cycle (trial, monthly package, or operator plan), what the next renewal keeps
+and expires, the prices, and the latest ledger movements, each naming its search or email lookup
+and Play. Buying credits or changing the package is a member's action in
+Settings › Billing; there is no tool for it. Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
 a scope — the full waterfall or one pipeline — or an explicit split) to see how the credits would
 be spread across post-watchlist, post-keyword, company-stack, company-hiring, and persona-sweep, the
-leads each stage is expected to find (a `basis` labeled `seededFrom` borrowed a retired merged
-pipeline's history while the split pipelines are young; scopes `post_engagement` and
-`company_signal` are themselves retired and refused — name the split pipelines instead), and the
-runnable budget for the current enforcement mode (`runnable.reason`
-names the rail that cut it: `ceiling`, `connection_ceiling`, `balance`, or `floor`); it is free.
+new people and leads each stage is expected to find with its `creditRange` and `assumptions`
+(a `basis` labeled `seededFrom` borrowed a retired merged pipeline's history while the split
+pipelines are young; scopes `post_engagement` and `company_signal` are themselves retired and
+refused — name the split pipelines instead), and what the balance lets through (`runnable`;
+`reason` is `balance` or `floor` when it is less); it is free. Omit `credits` to size each stage
+at its estimate for the target.
 A plan runs the Main Play's saved targeting exactly as its nightly runs do — each stage's own who
 and sources, Main's stage order and target; `targeting` shows them with Main's revision. A
 `target` or `geographies` you pass replaces Main's for that plan only; what you omit stays Main's. Confirm the credits
@@ -287,13 +287,13 @@ per-candidate verdicts, vetoes, and drops from its trail (page with `afterSeq`; 
 `decisionsLimit`, up to 200 — `limit` is the people page, up to 50) — also for a
 failed run, which has no result document.
 
-## Credit rollout posture
+## Credit posture
 
-Spend and preview responses include `enforcementMode`. In `shadow`, credit usage is
-recorded and balances may go negative; workspace and connection ceilings do not reduce or refuse
-runs. Use the preview's `runnable` result, not the raw remaining ceiling, to decide the plan's
-budget. Explicit pauses and the normal run limits still apply. In `enforce`, ceilings bind.
-The customer credit UI is separately gated by PostHog; MCP tools remain available.
+Spend and preview responses include `enforcementMode`. In `off`, credits are counted but not
+charged on this deployment yet: say so, and never present the numbers as money spent. In
+`enforce`, a search cannot start when the balance cannot cover the least it reserves, and work
+pauses when the balance cannot pay for anything; a refusal names what is left and the member's way
+forward on Settings › Billing — do not retry in a loop.
 
 ## No workspace yet: setting one up (onboarding)
 
@@ -337,16 +337,17 @@ the user asks:
   never says whether the address already has an account); `workspace_invitation_revoke` cancels a
   pending link. Membership starts only when the invitee accepts in their browser — you cannot
   accept for them, and member removal is not on this surface.
-- `workspace_mcp_grants_list` — the agents and clients connected to the workspace, each with its
-  own daily/monthly spend ceiling and pause state, and which entry is YOUR connection. Read only: approving a
-  new client or revoking one is a member's browser action.
+- `workspace_mcp_grants_list` — the agents and clients connected to the workspace, and which
+  entry is YOUR connection. Read only: approving a new client or revoking one is a member's browser
+  action.
 - `slack_channels_list` / `slack_delivery_set` — where lead-finding results are posted and how
   (`short` | `detailed`). A `reconnect_required` listing means a member must reconnect Slack in
   Settings before a channel can be chosen (`reason: "access_revoked"`: Slack no longer accepts
   Pancake's access, so nothing is posted until then); a channel the bot cannot post to is refused
   with what to do. Connecting and disconnecting Slack stay in the browser.
-- `billing_get` — plan, status, the access decision, and the catalog. Use it to explain a refusal
-  (a seat, a run, a feature); upgrading, checkout, and the billing portal stay in the browser.
+- `billing_get` — plan, status, the access decision, and — when credits are sold — the credit
+  package, its monthly credits and the LinkedIn licences. Use it to explain a refusal (a seat, a
+  run, a feature); changing the package, checkout, and the billing portal stay in the browser.
 
 Nothing here spends credits. Anything that grants access, handles a credential, or pays — approving
 clients, accepting invitations, connecting Slack, checkout, creating or deleting the workspace — is
@@ -358,7 +359,7 @@ The Pancake plugins ship three ready-made playbooks as skills beside this one, e
 of the tools above with the spend stated before anything is spent and a closing "what the human
 should look at":
 
-- `pancake-daily-leads` — find N leads today under X credits: balance and ceiling →
+- `pancake-daily-leads` — find N leads today under X credits: credits and run limits →
   `lead_finding_preview_plan` → confirm → `lead_finding_start_plan` → poll → report the leads,
   what was rejected and why, and what it cost.
 - `pancake-review-leads` — review last night's leads: `activity_since` from a cursor YOU keep
@@ -375,13 +376,13 @@ tool's semantics.
 
 Do not poll `lead_finding_list_runs` or `leads_list` and diff pages to learn what changed. Call
 `activity_since` instead: it returns the workspace trail in order — runs started, completed,
-failed, or cancelled; credits held, refused, or settled and ceiling changes; sequence connections
+failed, or cancelled; credits held, refused, or settled and credit cycles opened or closed; sequence connections
 and replies; sender disconnects; Brain revisions and proposals — from an opaque cursor. Store
 the `nextCursor` it returns (it is returned even when nothing happened) and pass it back as
 `cursor` on your next check; omit it only the first time. Every event carries a
 `meaning` line naming the follow-up call — a run completed points at `lead_finding_get_run`,
-credits refused or a ceiling change at `lead_finding_get_spend`, the balance low or exhausted
-(`credits.balance.low` / `credits.balance.exhausted`) at `credits_get_balance`, a reply at
+credits refused at `lead_finding_get_spend`, a credit cycle opened or closed at
+`credits_get_balance`, a reply at
 `campaign_get_lead_activity`, a sender disconnect at `campaign_get_sender_status`, a Brain
 change at `brain_get`. Narrow with `kinds` (exact event kinds) or `contexts` (leads, credits,
 campaigns, strategy, mcp, onboarding, slack); a filtered page is still a full page.

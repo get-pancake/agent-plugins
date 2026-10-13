@@ -1,6 +1,6 @@
 ---
 name: pancake-daily-leads
-description: "Playbook: find N leads today in a Pancake workspace under a stated credit ceiling — read the balance, preview the plan, confirm, start it, poll, and report what was found and rejected."
+description: "Playbook: find N leads today in a Pancake workspace under a stated credit limit — read the credits, preview the plan, confirm, start it, poll, and report what was found and rejected."
 ---
 
 # Find N leads a day under X credits
@@ -18,23 +18,26 @@ If the user gave only one, ask for the other before spending anything.
 
 ## 1. Read what the workspace can spend — free
 
-1. `credits_get_balance` — the billing period's `allowanceCredits`, `heldCredits`, `settledCredits`,
-   `availableCredits`, and `enforcementMode`.
-2. `lead_finding_get_spend` — today's and this month's ceiling (`remainingCredits`, which window
-   is `binding`, when it resets), this connection's own allowance under `connection`, whether
-   agent starts are paused, and `limits.startsRemainingToday` / `concurrentRemaining`.
+1. `credits_get_balance` — `availableCredits`, `heldCredits` (reserved by searches still running,
+   not spent), the current `cycle` (trial, monthly package or operator plan, with its allowance and
+   end), the fixed `prices` (a work email found), and `enforcement`. A search has no fixed price:
+   it reserves credits when it starts and is charged its actual research cost, 1,000 credits per
+   $1 rounded down, whatever it finds.
+2. `lead_finding_get_spend` — `balance`, `startable` (under `enforce`, the credits a start may
+   reserve right now), and `limits.startsRemainingToday` / `concurrentRemaining`.
 3. `lead_finding_list_runs` with `{"limit": 5}` — if any run is `pending` or `running`, stop here:
    never start a second plan while one is in flight. Tell the user which run is running and offer
    to poll it instead.
 
-Decide the envelope you will ask for, `E = min(X, spend.remainingCredits, the connection's
-remaining allowance if one is set)`. In `enforce` mode the ceilings bind, so `E` is what could
-actually run. In `shadow` mode nothing is refused and balances may go negative — `E` still stays
-at or below X because X is the user's number, not the ceiling's. If `enforcementMode` is `off`,
-credits are not tracked on this deployment: say so, and treat X as the only rail.
+Decide the credits you will ask for, `E = min(X, startable.credits)` when `startable` is set, else
+`E = X`. E is the most the plan may reserve and the most it can be charged; it is charged only the
+research it actually does. In `enforce` the balance binds: a run whose research reaches its cap
+stops and publishes what it found. If `enforcement` is `off`, credits are recorded but not charged
+on this deployment: say so, and treat X as the only rail.
 
-If `agentStartsPaused` is true or `startsRemainingToday` is 0, report it and stop; only a member
-can unpause in Settings.
+If `startsRemainingToday` is 0, report it and stop. If the balance cannot cover the least a search
+reserves, say so and point the user at Settings › Billing (a new monthly cycle or a larger
+package); paying stays with a person.
 
 ## 2. Preview the plan — free
 
@@ -42,14 +45,14 @@ can unpause in Settings.
 only if the user asked for them). Read back:
 
 - `stages` — for post-watchlist, post-keyword, company-stack, company-hiring, and persona-sweep: the
-  credits `planned`, the `expectedLeads` (p25/p50/p80), `creditsPerLead`, and a `basis` saying
-  whether the estimate comes from this workspace's own runs or a fleet aggregate (a basis labeled
-  `seededFrom` borrowed a retired merged pipeline's history while the split pipelines are young); a
-  stage with `skipped: "target_met"` gets nothing. `expectedLeadsTotal` and `unallocatedCredits`
-  sum it up.
-- `runnable.credits` — what the current enforcement mode would let through (with a `reason` and
-  `resumesAt` when it is less than you asked). Use it, not the raw ceiling.
-- `nextStep`, and anything else it warns about (an unusable Brain, a paused connection).
+  credits `planned` (what the stage reserves: the most it may cost), the `expectedLeads`
+  (p25/p50/p80, an estimate, never a promise), and a `basis` saying whether the estimate comes from
+  this workspace's own runs or a fleet aggregate (a basis labeled `seededFrom` borrowed a retired
+  merged pipeline's history while the split pipelines are young); a stage with
+  `skipped: "target_met"` gets nothing. `expectedLeadsTotal` and `unallocatedCredits` sum it up.
+- `runnable.credits` — what the balance lets through (with a `reason` — `balance` or `floor` —
+  when it is less than you asked). Use it, not the raw balance.
+- `nextStep`, and anything else it warns about (an unusable Brain, missing signals).
 
 If the expected leads fall clearly short of N, say so and offer either a larger E (never above X)
 or a smaller N. Do not silently raise the envelope.
@@ -61,8 +64,9 @@ Before starting, tell the user in one message:
 > I will start a `<scope>` plan aiming for **N leads** with an envelope of **E credits**
 > (planned: post-watchlist A / post-keyword B / company-stack C / company-hiring D /
 > persona-sweep F). Expected leads ≈ L (p50).
-> Enforcement is `<mode>`; the workspace has V credits available this period and the ceiling
-> allows R more today. Nothing has been spent yet. Start it?
+> Enforcement is `<mode>`; the workspace has V credits available this cycle. The plan reserves at
+> most E and is charged only the research it actually does, rounded down. Nothing has been spent
+> yet. Start it?
 
 Wait for an explicit yes. A previous confirmation for a different envelope does not carry over.
 
@@ -81,14 +85,15 @@ From the final `lead_finding_get_run` (add `include: "rejected"` for the retired
 
 1. **Found**: how many leads the run put in stage `qualified` (a strong match) against N, and
    the first page of people — name, title, company, `fit`, and the signal that surfaced them.
-2. **Spent**: `report.credits` — what the ledger charged the run and its hops against E. Say
-   plainly whether it stayed inside E (it must; if the ledger shows more, report that as a
-   discrepancy rather than explaining it away).
+2. **Spent**: `report.credits` — what the ledger charged the run and its hops for their research,
+   against E (`documentSpend` is what the run's own record says its research cost). Say plainly
+   whether it stayed inside E (it must; if the ledger shows more, report that as a discrepancy
+   rather than explaining it away).
 3. **Rejected and why**: `report.rejections` — the counts per reason with their `meaning` and a
    few named examples. A wall of hard vetoes means the sources are off; a wall of low ICP scores
    means the bar is high; enrichment or judge failures are a provider issue.
-4. **Stopped**: `report.stopped` — `budget`, `deadline`, `lead_limit`, `sources_dry`, `error`, or
-   `cancelled`, and what that says about the next run.
+4. **Stopped**: `report.stopped` — `budget` (its research reached its cap), `deadline`,
+   `lead_limit`, `sources_dry`, `error`, or `cancelled`, and what that says about the next run.
 5. **Advice**: `report.advice` verbatim. An empty `advice` means the run met its target.
 
 Then `credits_get_balance` once more and quote the new `availableCredits`, and `leads_list`

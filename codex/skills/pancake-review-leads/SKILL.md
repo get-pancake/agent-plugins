@@ -36,7 +36,7 @@ Keep paging while `hasMore` is true. Collect:
 - `leads.lead_finding.completed` / `.failed` / `.cancelled` — each run's lead and rejected counts
   from `payload`; its `correlationId` is the `runId` to read (the `meaning` line says which tool).
 - `credits.*` — what those runs were charged, or a refusal to relay.
-- Anything else the user should hear about (a ceiling change, a paused connection).
+- Anything else the user should hear about (credits refused, a credit cycle that closed).
 
 If there were no completed runs, say so, quote the `credits` events if any, store the cursor, and
 stop. Do not go fishing in `leads_list` for something to review.
