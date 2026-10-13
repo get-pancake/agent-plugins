@@ -197,8 +197,8 @@ the remedy) and `activeRun` — the run already queued or running for that Play,
   `needs_review` lead does not. Its
   `nextStep` names the sequence. `sizeBand` crosses this surface as `{min, max}`.
 - `plays_update` replaces the complete name, pipeline, and input under the exact `revision` from
-  `plays_get`. Preserve fields the user did not ask to change. `plays_delete` soft-deletes a Play
-  under the same revision rule; its history and Lead attribution remain. Main cannot be deleted.
+  `plays_get`. Preserve fields the user did not ask to change. `plays_delete` archives a Play
+  under the same revision rule; its history and Lead attribution remain. Main cannot be archived.
 - Every Play also carries a `definition` — `{audience, policy}`: typed audience constraints over
   `person.*` / `company.*` / `employment.*` fields, and a policy with `target.newToPlay`, an
   optional `envelope.creditsPerPeriod` (a ceiling inside the workspace allowance), `freshness`
