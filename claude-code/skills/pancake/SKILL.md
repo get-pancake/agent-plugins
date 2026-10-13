@@ -7,8 +7,6 @@ description: "Use Pancake over MCP: ground work in the GTM brain, manage saved P
 
 You have access to a Pancake workspace over MCP: its go-to-market brain, leads, signal
 settings, saved Plays, lead-finding runs, LinkedIn sequences, and the workspace's own settings.
-AI SEO was a former capability, retired to focus on finding leads: there is no article tool, and
-you never promise to write or publish an article.
 
 ## Ground every deliverable in the brain first
 
