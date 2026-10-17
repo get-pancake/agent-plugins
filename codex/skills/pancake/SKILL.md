@@ -240,16 +240,16 @@ search. Take each paid or activating step only when the member asks.
 Pancake's scheduler runs the nightly waterfall on its own. This surface can also start work on
 demand, and the unit is CREDITS: a search reserves credits when it starts (up to its cap), is
 charged what its research actually cost — in credits, summed over the search and rounded down —
-and the rest of the reservation comes back; a work email found costs 50, and a
-lookup that finds none is free. Creating, editing and testing a Play cost nothing. An estimate or
+and the rest of the reservation comes back; a work email found costs 50, a phone number found
+costs 500, and a lookup that finds none is free. Creating, editing and testing a Play cost nothing. An estimate or
 a reservation is never the charge, and credits never buy a number of leads. Call
 `lead_finding_get_spend` first: `balance` has the available credits, the credits running
 searches reserve, this month's allowance and when the cycle ends, `startable` the credits a start
 may reserve right now when credits are enforced, plus how many agent-started runs remain allowed
 today and concurrently. For what each run cost — call `credits_get_balance`: it returns the
 balance, the current cycle (trial, monthly package, or operator plan), what the next renewal keeps
-and expires, the prices, and the latest ledger movements, each naming its search or email lookup
-and Play. Buying credits or changing the package is a member's action in
+and expires, the prices, and the latest ledger movements, each naming its search, email lookup
+or phone lookup and Play. Buying credits or changing the package is a member's action in
 Settings › Billing; there is no tool for it. Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
 a scope — the full waterfall or one pipeline — or an explicit split) to see how the credits would
 be spread across post-watchlist, post-keyword, company-stack, company-hiring, and persona-sweep, the
