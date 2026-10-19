@@ -1,8 +1,8 @@
 {
   "name": "pancake",
   "displayName": "Pancake",
-  "description": "Connect Claude Code and Cowork to your Pancake workspace: GTM Brain, leads, signals, LinkedIn outreach, and workspace settings.",
-  "version": "0.4.0",
+  "description": "Find the right leads, act on buying signals, and run LinkedIn outreach from your Pancake workspace.",
+  "version": "0.4.1",
   "author": {
     "name": "Pancake",
     "email": "hey@pancake.ai",
@@ -10,6 +10,12 @@
   },
   "homepage": "https://pancake.ai",
   "repository": "https://github.com/get-pancake/agent-plugins",
+  "license": "MIT",
+  "icon": "./assets/pancake.png",
+  "documentationUrl": "https://github.com/get-pancake/agent-plugins/tree/main/claude-code#readme",
+  "supportUrl": "https://pancake.ai/support",
+  "privacyPolicyUrl": "https://pancake.ai/privacy",
+  "termsOfServiceUrl": "https://pancake.ai/terms",
   "keywords": ["marketing", "go-to-market", "leads", "pancake"],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json"

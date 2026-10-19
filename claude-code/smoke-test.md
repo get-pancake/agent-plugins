@@ -1,37 +1,33 @@
-# Smoke test — Claude Code plugin
+# Smoke test — Pancake
 
-Run this after any install/config change to `agent-plugins/claude-code/` or the shared skill,
-against a real (non-production-critical) Pancake workspace.
+Run this after an install or plugin update, using a test workspace. Record the installation source, plugin version, source commit, and the surface tested. A local or GitHub installation is not proof of a fresh installation from Anthropic's public directory.
+
+## Installation
 
 ```bash
-claude plugin marketplace add ./agent-plugins   # or get-pancake/agent-plugins
+claude plugin marketplace add get-pancake/agent-plugins
 claude plugin install pancake@pancake
-claude plugin details pancake@pancake   # expect: Skills (4), MCP servers (1) pancake
+claude plugin details pancake@pancake
 ```
 
-Then inside a Claude Code session with the plugin enabled:
+Expect the name **Pancake**, four skills, and one remote MCP server named `pancake`. For a directory publication check, start with a fresh isolated profile and install from the public directory instead. Check Claude Code and Cowork separately once the listing is published.
 
-1. **Authenticate**: `/mcp` → **pancake** → Authenticate. The browser opens Pancake's sign-in +
-   workspace picker; after approving, the server shows ✔ Connected. No key or env var exists.
-2. **Read**: ask Claude to call `brain_get`. Confirm the response is the test workspace's actual
-   company name and ICP, not an error and not another workspace's data.
-3. **Safe write**: ask Claude to call `brain_add_keyword` with a throwaway phrase (e.g.
-   `smoke-test-keyword`). Confirm a follow-up `brain_get` shows it, then call `brain_archive_item`
-   to remove it.
+## Read-only checks
 
-Clean up:
+1. **Connection:** use an existing authorization for the test workspace. If there isn't one, get the workspace owner's confirmation before approving a new standing OAuth connection. In Claude Code, use `/mcp` → **pancake** → Authenticate, then complete Pancake sign-in and workspace selection in the browser.
+2. **Tool discovery:** inspect the tools returned by the remote server. The plugin must not apply a fixed allowlist. Compare the catalog for the actual connection, accounting for workspace permissions, subscription, and enabled features. Before onboarding is complete, only `onboarding_status` is expected. Operator-only tools must remain unavailable.
+3. **Read:** call `workspace_get` or `brain_get`. Confirm the result belongs to the selected test workspace and contains no other workspace's data. Do not publish customer data, tokens, or private tool output in test evidence.
+4. **No side effects:** do not run lead finding, enroll recipients, send messages, invite members, or change schedules to verify discovery. Tool availability is not permission to execute it.
+
+## Optional write check
+
+Only if the test workspace owner explicitly authorizes it, add a disposable watched keyword with `brain_add_keyword`, read it back with `brain_get`, and remove that exact keyword with `brain_archive_item`. Record the persisted result and cleanup separately from the read-only checks.
+
+## Cleanup
 
 ```bash
 claude plugin uninstall pancake@pancake
 claude plugin marketplace remove pancake
 ```
 
-Then disconnect the grant in the Pancake app: Settings → MCP → Connected clients → Disconnect.
-
-Last run: 2026-08-19 — the browser OAuth flow (ADR 0055) verified end to end against
-beta.getpancake.ai with a real Claude Code client: challenge → discovery → consent → tokens →
-`ping`/tools succeed; grant visible and revocable in Settings.
-
-Repeat the full flow against `app.pancake.ai` after the PAN-1318 domain move, and confirm an install
-still configured with `app.getpancake.ai` re-authorizes through that host; the beta result is not
-evidence that the canonical-host OAuth and provider registrations work.
+Remove only the isolated test installation. If you created a test OAuth connection, disconnect that specific connection in **Settings → Claude & Codex → Connected clients**; do not revoke an existing connection still used elsewhere.
