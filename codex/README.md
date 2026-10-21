@@ -3,7 +3,8 @@
 Gives Codex CLI the same Pancake workspace access as the Claude Code plugin: the
 [`pancake`](skills/pancake/SKILL.md) skill — the same skill a member can
 already download from **Settings → MCP** in the app, generated (not hand-written) here — the
-three playbook skills (`pancake-daily-leads`, `pancake-review-leads`, `pancake-refresh-icp`),
+four playbook skills (`pancake-daily-leads`, `pancake-review-leads`, `pancake-refresh-icp`,
+`pancake-onboarding`),
 plus the workspace-scoped MCP server. Authentication is a browser sign-in (OAuth); there is no key
 or env var to configure.
 
@@ -51,7 +52,7 @@ If your Codex version predates `codex plugin`, install manually instead:
    ```bash
    git clone https://github.com/get-pancake/agent-plugins
    mkdir -p ~/.codex/skills
-   for skill in pancake pancake-daily-leads pancake-review-leads pancake-refresh-icp; do
+   for skill in pancake pancake-daily-leads pancake-review-leads pancake-refresh-icp pancake-onboarding; do
      ln -s "$(pwd)/agent-plugins/codex/skills/$skill" ~/.codex/skills/$skill
    done
    ```

@@ -12,14 +12,17 @@ Installable packages that connect a coding agent to your Pancake workspace's MCP
   `codex/skills/pancake/SKILL.md`, and `droid/skills/pancake/SKILL.md`
   (real files, not symlinks — a symlinked skill silently installs empty under Codex's plugin
   cache).
-- **Playbooks** — three ready-made routines shipped as their own skills beside the tool skill,
+- **Playbooks** — four ready-made routines shipped as their own skills beside the tool skill,
   each stating what it will spend before spending and ending with what the human should look at:
   [`pancake-daily-leads`](pancake/skills/pancake-daily-leads/SKILL.md) (find N leads today under
   X credits), [`pancake-review-leads`](pancake/skills/pancake-review-leads/SKILL.md) (judge what
   came in since your last check, from a cursor the agent keeps), and
   [`pancake-refresh-icp`](pancake/skills/pancake-refresh-icp/SKILL.md) (resolve Brain proposals
-  and feedback, then show the Brain diff). They are authored under `pancake/skills/` and copied
-  verbatim into the other packages, so every install gets the same four skills.
+  and feedback, then show the Brain diff), and
+  [`pancake-onboarding`](pancake/skills/pancake-onboarding/SKILL.md) (finish a paid founder's
+  welcome in their coding agent with one confirmed first Play). They are authored under
+  `pancake/skills/` and copied verbatim into the other packages, so every install gets the same
+  five skills.
 - [`claude-code/`](claude-code/README.md) — an installable Claude Code plugin (this repo's own
   `.claude-plugin/marketplace.json` at the root points at it; `claude-code/.claude-plugin/plugin.json`
   and `claude-code/.mcp.json` describe the plugin itself).
@@ -35,7 +38,7 @@ Installable packages that connect a coding agent to your Pancake workspace's MCP
   package.
 - **Any other agent** (fx, Cursor, Zed, Gemini CLI, Amp, goose, Copilot CLI…) — connect the MCP
   server with the one-line prompt from **Settings → MCP** in the Pancake app, then install the
-  four skills the same way: paste
+  five skills the same way: paste
   `Install the Pancake skills by reading https://raw.githubusercontent.com/get-pancake/agent-plugins/main/skills.md and following its instructions.`
   into the agent. [`skills.md`](skills.md) tells it where its skills directory is and fetches
   each `SKILL.md` from this repo, so a re-run always picks up the current version. Humans can

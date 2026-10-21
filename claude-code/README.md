@@ -11,12 +11,13 @@ Use Pancake to:
 
 ## What's included
 
-The plugin connects Claude to Pancake's remote MCP server and includes four skills:
+The plugin connects Claude to Pancake's remote MCP server and includes five skills:
 
 - [`pancake`](skills/pancake/SKILL.md): operating guidance for the workspace's tools.
 - [`pancake-daily-leads`](skills/pancake-daily-leads/SKILL.md): find leads within a credit budget you approve.
 - [`pancake-review-leads`](skills/pancake-review-leads/SKILL.md): review new leads and explain their fit.
 - [`pancake-refresh-icp`](skills/pancake-refresh-icp/SKILL.md): review feedback and proposed targeting changes.
+- [`pancake-onboarding`](skills/pancake-onboarding/SKILL.md): finish your Pancake welcome here and create your first Play.
 
 Skills are guidance, not a limit on the tools available. The MCP connection discovers the complete tool catalog allowed for the signed-in member and selected workspace. That includes Brain, leads, signals, Plays, lead finding, LinkedIn sequences, public-page research, activity, credits, and workspace settings. Availability follows the workspace's subscription, permissions, and enabled features; operator-only administration tools are not exposed.
 

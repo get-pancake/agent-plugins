@@ -358,7 +358,7 @@ deliberately not a tool: say so and point the user at Settings.
 
 ## Playbooks
 
-The Pancake plugins ship three ready-made playbooks as skills beside this one, each a sequence
+The Pancake plugins ship four ready-made playbooks as skills beside this one, each a sequence
 of the tools above with the spend stated before anything is spent and a closing "what the human
 should look at":
 
@@ -371,6 +371,10 @@ should look at":
 - `pancake-refresh-icp` — refresh the ICP from feedback: `brain_get` before → pending proposals
   and recent verdicts → resolve or record market feedback → `brain_get` after and print the
   field-level diff yourself.
+- `pancake-onboarding` — finish a paid founder's welcome in this agent: `postboarding_get_context`
+  → `brain_get` and `plays_list` → ask only what is missing → confirm one first Play →
+  `postboarding_confirm_first_play` (one Play, however often it is retried) → real progress and
+  an optional tour. `postboarding_get_context` also serves it to clients without skills.
 
 When the user's request matches one, follow that playbook; this skill stays the reference for each
 tool's semantics.

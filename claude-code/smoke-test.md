@@ -10,7 +10,7 @@ claude plugin install pancake@pancake
 claude plugin details pancake@pancake
 ```
 
-Expect the name **Pancake**, four skills, and one remote MCP server named `pancake`. For a directory publication check, start with a fresh isolated profile and install from the public directory instead. Check Claude Code and Cowork separately once the listing is published.
+Expect the name **Pancake**, five skills, and one remote MCP server named `pancake`. For a directory publication check, start with a fresh isolated profile and install from the public directory instead. Check Claude Code and Cowork separately once the listing is published.
 
 ## Read-only checks
 

@@ -22,10 +22,11 @@ where you sign in to Pancake the usual way and pick the workspace to connect.
 
 **2. Install the skills** — paste
 `Install the Pancake skills by reading https://raw.githubusercontent.com/get-pancake/agent-plugins/main/skills.md and following its instructions.`
-into Droid and it fetches the four skills into `~/.factory/skills/`. Or by hand: copy
+into Droid and it fetches the five skills into `~/.factory/skills/`. Or by hand: copy
 [`skills/pancake/`](skills/pancake/) to `~/.factory/skills/pancake/` (personal) or
-`<your-repo>/.factory/skills/` (project), and the three playbooks beside it the same way
-(`skills/pancake-daily-leads/`, `skills/pancake-review-leads/`, `skills/pancake-refresh-icp/`),
+`<your-repo>/.factory/skills/` (project), and the four playbooks beside it the same way
+(`skills/pancake-daily-leads/`, `skills/pancake-review-leads/`, `skills/pancake-refresh-icp/`,
+`skills/pancake-onboarding/`),
 then restart Droid so it loads.
 
 ## Manage the connection
