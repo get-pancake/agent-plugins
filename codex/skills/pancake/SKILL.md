@@ -157,7 +157,7 @@ who replied or whose sequence ended stays stopped. `plays_pause` and
 and its scheduled searches. They take the Play's `playId`, Main included: when it is not
 clear which Play the user means, ask. `campaign_pause` and `campaign_resume` are the older
 form, by `campaignId`. Use these writes only when explicitly requested.
-Connecting a sender stays in the browser. Sequences have no objective, and Pancake never answers a
+When available and with the member’s agreement, `campaign_start_linkedin_connect` gets a private temporary sign-in link. The member completes LinkedIn sign-in and verification in their browser, then the agent checks `campaign_get_sender_status` with the returned `senderId`. Read accounts first and reuse a connected intended account. A link proves no connection. Never ask for credentials, buy licences or treat connecting as permission to enroll leads; reconnecting may resume previously queued outreach. Sequences have no objective, and Pancake never answers a
 prospect itself: a reply ends that person's sequence, Pancake tells the member, and the member
 answers on LinkedIn.
 

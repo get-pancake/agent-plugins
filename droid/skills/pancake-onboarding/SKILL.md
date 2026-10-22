@@ -2,7 +2,7 @@
 name: pancake-onboarding
 description: "Playbook: finish a paid founder's Pancake welcome here — read the welcome and Brain, ask only what is missing, confirm one first Play, create it once, show real progress, offer a tour."
 metadata:
-  version: "1.1.1"
+  version: "1.2.0"
 ---
 
 # Create the founder's first Play in their AI app
@@ -59,6 +59,18 @@ Then resume where the welcome stands:
 "acknowledge_handoff", "playbookVersion": "<playbook.version>", "client": "claude_code" | "codex" |
 "other"}}` (`other` for Claude Chat, ChatGPT and any other app). The founder's browser then says the
 welcome continues here and follows its progress. Repeating it in a later chat is harmless.
+
+## Before the first Play: connect LinkedIn — highly recommended, optional
+
+After the workspace and handoff are confirmed, and before the brief, offer: "I highly recommend connecting LinkedIn now so your account is ready when you want to contact the people your Play finds. You sign in in your browser. You can also skip and create your Play now." Finding leads and creating a Play do not require LinkedIn. Never imply a better search or permission to send messages from a connection alone.
+
+1. Read `campaign_list_linkedin_accounts`. If the intended account is already `connected`, continue without a new sign-in. If several accounts exist or one may belong to a colleague, ask which account they intend to use; never choose or reconnect another person's account by assumption.
+2. When they agree, call `campaign_start_linkedin_connect`: no arguments for a first account, the returned `senderId` to resume or reconnect an existing account, or `newSender: true` only for an explicitly requested additional account. Use IDs from tools, never ask the founder to enter one. The flow may reserve an available LinkedIn licence but buys none. If none is available, explain the limitation and offer to skip; buying a licence stays with the member.
+3. Present its private temporary `url` as **Connect LinkedIn**. Explain: open it in your own browser, sign in to the intended LinkedIn account, complete any code, app approval or CAPTCHA there, then return to this chat. Never ask for passwords, cookies or verification codes, and never copy the link into analytics, logs, the Brain or shared documents.
+4. After they return, call `campaign_get_sender_status` with that exact `senderId`. Only `connected` proves success; a URL, redirect or "done" does not. If pending, wait briefly and check once more, then offer to continue and check later. If expired, request a new link for the same sender. If verification fails, help them retry in the browser.
+5. If the tool is absent after one discovery refresh or the connection flow is unavailable, guide the member to Pancake **Settings → LinkedIn accounts → Connect LinkedIn**, or reconnect the intended account, and back here after sign-in. If the welcome still locks settings, skip until the app opens. Never bypass the welcome or change workspace.
+
+If they skip or say later, continue the brief immediately and do not keep asking. Do not use `defer` for this: that skips the first Play. On resuming, preserve the saved welcome and respect a known skip; never restart a completed welcome for this optional step. Connecting does not authorize enrolling leads or changing sequences. For a reconnect used by existing sequences, warn that previously queued outreach may resume once connected.
 
 ## 3. Learn what is missing — one question at a time
 
@@ -160,5 +172,5 @@ another chat.
 ## What the human should look at
 
 The first Play in Pancake (its link), what its first search found once it finished, and the
-credits it uses. Connecting LinkedIn or Slack and changing the plan stay theirs, in the browser.
+credits it uses. LinkedIn sign-in and verification, connecting Slack and changing the plan stay theirs, in the browser; the agent can request the LinkedIn sign-in link after they agree.
 Outreach starts only when they add people to a sequence themselves.
