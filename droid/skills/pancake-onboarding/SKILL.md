@@ -2,7 +2,7 @@
 name: pancake-onboarding
 description: "Playbook: finish a paid founder's Pancake welcome here — read the welcome and Brain, ask only what is missing, confirm one first Play, create it once, show real progress, offer a tour."
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Create the founder's first Play in their AI app
@@ -36,7 +36,7 @@ answers:
 - `session` — `revision` (every `postboarding_advance` names it), `step`, `handoff`,
   `briefRevision` and `completion`; `allowedActions` — the moves possible now. Make only those.
 - `capabilities.firstPlayLifecycle` — `coded` (Pancake writes the Play's search from the
-  founder's words) or `planned` (you plan it with `plays_plan`); `capabilities.credits` — the
+  founder's words) or `unavailable` (wait; never fall back to a legacy Play); `capabilities.credits` — the
   credit mode and what is available.
 - `brief`, `firstPlay`, `uiFirstPlay`, `walkthrough`, `links` and `nextStep`.
 - `playbook` — this guidance with its version. When your installed copy has another version,
@@ -104,12 +104,7 @@ Propose ONE Play, named after who it finds, and say why it is the useful first s
 - `coded` — Pancake writes, prepares and checks the search itself from the founder's words. No
   sample waits for anyone's approval: the first search runs once the checks pass, then the Play
   searches as they chose.
-- `planned` — call `plays_plan` with `intent` in the founder's words, show them the proposal and
-  its credit range, and keep its `createArguments` (`selectedPipeline` with `input` or
-  `definition`) for step 5. When it answers a clarification instead, ask the founder its question.
-  When a pipeline is `ready` but no proposal comes, the plan is that pipeline's `input`: its `_tag`
-  and the fields `plays_plan` lists as overridable for it, in the founder's words. Never write a
-  `definition` by hand.
+- `unavailable` — keep the saved brief and wait for search creation to become available. Never fall back to `plays_plan` or legacy creation. The founder may defer setup to enter the app now.
 
 Before anything is created, summarize in one message and ask them to confirm: who it finds, what it
 excludes, how many new leads per search, how often it searches and whether the first search runs
@@ -122,10 +117,7 @@ A no or a "not now" creates nothing. When they want the app now and the Play lat
 
 ## 5. Create it — once
 
-`postboarding_confirm_first_play` with `{"briefRevision": <the revision they confirmed>}`, plus, for
-a `planned` workspace, `plan` (the proposal's `selectedPipeline` with its `input` or `definition`)
-and, when the first search runs now, `credits` (the most it may use, as they agreed). Leave
-`credits` out when it does not run now.
+`postboarding_confirm_first_play` with `{"briefRevision": <the revision they confirmed>}`. New Plays use the coded lifecycle and its ordinary credit authorization; do not send a legacy `plan` or its old `credits` parameter.
 
 It creates the welcome's one first Play through the workspace's own lifecycle, or answers the one
 that already exists: a retry, a new chat or another tab never makes a second Play. `outcome` says

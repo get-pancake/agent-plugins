@@ -174,8 +174,7 @@ pipeline and its own targeting: a new Play copies every field you omit from what
 today (the Brain, the signal settings, the tracked own brand) and keeps that copy, so a later Brain
 edit never changes it; pains and objections stay the Brain's. A `post_watchlist` Play names each
 page it watches in `watchlist` (`{role, name, url}`: competitor, influencer, or own_brand).
-The `plays_list`, `plays_get`, and
-`plays_create` views carry `readiness` for the Play's signal source (ready or blocked, with
+The `plays_list` and `plays_get` views carry `readiness` for the Play's signal source (ready or blocked, with
 the remedy) and `activeRun` — the run already queued or running for that Play, or `null`.
 
 - To create a Play for a goal ("meetings with CTOs looking for a code review tool"), call
@@ -190,15 +189,11 @@ the remedy) and `activeRun` — the run already queued or running for that Play,
   and need not re-buy, plus `gates`, one per pivot of the plan's step chain: the cardinality
   estimate a run's measurement gate checks the step's real output against — `at`, `entity`,
   `bound`, `expected` p25–p80, `basis` — and empty for a single-step plan), and a
-  `candidate` for `plays_create`. Show the normalized audience,
+  `candidate` for historical definition review. Show the normalized audience,
   assumptions, chosen strategy, and band to the user, then create only after confirmation. If the
   proposal asks a clarification, ask it and call `plays_plan` again with the answer.
-- `plays_create` saves a new Play and creates its own LinkedIn sequence. Choose exactly
-  one of `post_watchlist`, `post_keyword`, `company_stack`, `company_hiring`, or
-  `persona_sweep`. With an `input`, `target` (1–50) sets the new leads per run the Play is saved
-  with (default 10). Only leads in stage `qualified` (a strong match) count toward it; a
-  `needs_review` lead does not. Its
-  `nextStep` names the sequence. `sizeBand` crosses this surface as `{min, max}`.
+- Create new Plays with `plays_create_from_ask`, using the member's words, lead cap and recurrence choice.
+  If it is unavailable, search creation is temporarily unavailable: never fall back to legacy creation.
 - `plays_update` replaces the complete name, pipeline, and input under the exact `revision` from
   `plays_get`. Preserve fields the user did not ask to change. `plays_delete` archives a Play
   under the same revision rule; its history and Lead attribution remain. Main cannot be archived.
@@ -209,7 +204,7 @@ the remedy) and `activeRun` — the run already queued or running for that Play,
   walks (Main's default is post watchlist → post keyword → company stack → company hiring →
   persona sweep). The `input` override is the shorthand: it constructs the definition, and an
   `input` update keeps the policy and edits only that pipeline's instance. To change the nightly
-  order, the target, or the envelope, send a `definition` to `plays_create` / `plays_update`
+  order, the target, or the envelope, send a `definition` to `plays_update` for a historical Play
   (read Main with `plays_get` for the shape; `selectedPipeline` must name one of its
   instances). Every instance must be one of the five canonical pipelines today.
 - Before `plays_run`, read `plays_get`: its `readiness` says whether the selected source can
@@ -309,14 +304,11 @@ exactly what to do and poll it every minute or two.
 
 ## When lead finding runs
 
-The unattended schedule is the member's choice. `lead_finding_schedule_get` reports its `mode`:
-`daily`, `weekdays` (Monday–Friday in the workspace's timezone), `weekly` (with a `weekday`,
-0 = Sunday), `days` (custom days: a `weekdays` list, 0 = Sunday), `off`, or `agent`.
-`lead_finding_schedule_set` changes it — only when the user asks. `agent` means Pancake's scheduler stands down and you decide when to look for leads by
-calling `lead_finding_start_plan` yourself; no morning digest is sent on days without a run. Switching back to a cadence resumes from the next occurrence and never
-backfills missed days. Pass `localTime` (`HH:MM`) to move the start; omit it to keep the current
-time, or, for a workspace with no schedule yet, Pancake's overnight slot so results are ready for
-the 08:30 digest. These tools never change budgets, lead targets, or tuning.
+Choose each Play's recurrence with `plays_set_schedule`, after the member approves it.
+`lead_finding_schedule_get` reads a historical workspace schedule (`daily`, `weekdays`,
+`weekly`, `days`, `off` or `agent`). `lead_finding_schedule_set` can only turn it
+`off`; other modes are refused without changing the saved cadence or tuning. Read the Play
+with `plays_get` before choosing its search schedule. Never fall back to legacy scheduling.
 
 ## Workspace settings, members, Slack delivery, and billing
 
