@@ -211,7 +211,8 @@ the remedy) and `activeRun` — the run already queued or running for that Play,
   run (fix the remedy first when blocked), and a non-null `activeRun` means a run is already
   queued or running for that Play — `plays_run` is refused while one exists, so read that run
   with `lead_finding_get_run` instead of starting another. Then read `lead_finding_get_spend`
-  for the workspace's credits and volume limits. Confirm the credits with the user.
+  for the workspace's credits. Search starts have no daily or concurrent admission quota; accepted
+  searches can wait for execution capacity. Confirm the credits with the user.
   `plays_run` accepts only
   the saved `playId`, `credits`, and an optional bounded lead `target` — never a pipeline or
   ad-hoc input override — and starts exactly that saved Play revision. Poll the returned `runId`
