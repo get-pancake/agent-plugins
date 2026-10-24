@@ -58,8 +58,7 @@ starting.
 Present one lead at a time — name, title, company, `fit` and its reason, `warmness`,
 `originSignal`, the signal or post that surfaced them — and ask for one of:
 
-- **Good lead** → `lead_feedback_submit` `{"personId", "verdict": "up"}`, with the user's reason
-  as `comment` when they gave one.
+- **Good lead** → keep it in To review. Standalone approval is retired: never send `up` to a feedback tool. "Looks good" does not authorize outreach. If the user asks to contact this person, follow the `pancake` skill's campaign preparation and add flow.
 - **Not a fit** → `lead_feedback_submit` `{"personId", "verdict": "down", "comment": <why>}`. Ask
   for the reason: a criterion-naming comment ("consultancies are out", "too senior") is what
   the improvement loop turns into an ICP proposal. A down verdict rejects the lead for the whole
@@ -76,10 +75,7 @@ Apply each verdict as it is given, not in a batch at the end, so an interrupted 
 nothing. A `lead_feedback_withdraw` reverses a verdict the user changes their mind about, and
 restores a rejected lead for everyone.
 
-If the user says "they all look fine" or "mark them all down", confirm the count once and apply
-the same verdict to all of them in one `lead_feedback_submit_bulk` call
-(`{"personIds": [...], "verdict": "up"}`, up to 50 ids, an optional shared `comment`); it reports
-per person what was recorded, so name every one in the summary.
+If the user says "they all look fine", keep them in To review. For "mark them all down", confirm the count once and call `lead_feedback_submit_bulk` with `{"personIds": [...], "verdict": "down"}` (up to 50 ids and an optional shared `comment`); report each result. To undo old approvals, call `lead_feedback_withdraw` for each selected person. Historical positive verdicts remain readable but no longer hide a lead from To review when it is in no sequence and is not otherwise set aside.
 
 ## 4. Report what changed
 
@@ -87,8 +83,7 @@ End with:
 
 1. **The night**: runs completed, leads found against target, credits charged, stop reason, and
    the dominant rejection reason with its `meaning`.
-2. **Verdicts**: a table of lead → what you did (up / down + comment / promoted / disqualified /
-   skipped).
+2. **Verdicts**: a table of lead → what you did (kept for review / rejected + comment / promoted / disqualified / skipped).
 3. **Signal for the Brain**: the criterion-naming comments you recorded, because these pull the
    next improvement analysis forward — mention that the `pancake-refresh-icp` playbook reviews the
    proposals it writes.

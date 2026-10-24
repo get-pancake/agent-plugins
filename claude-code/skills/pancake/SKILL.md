@@ -100,24 +100,13 @@ A lead reports two different signals of quality:
 `originSignal` says what first surfaced the person. `feedback.mine` is this key owner's latest
 judgment; the counts summarize all members.
 
-Only call `lead_feedback_submit` when the user asks to judge a lead or clearly confirms the
-verdict. It takes the lead's `personId`, `up` or `down`, and an optional comment. Feedback helps
-Pancake improve, and it decides the lead for the whole workspace: a `down` disqualifies it for
-every member and stops any live outreach at it, an `up` makes a `needs_review` or
-`disqualified` lead `qualified` (a strong match). The latest decision wins. For a reviewed batch — "they all look
-fine" — `lead_feedback_submit_bulk` takes up to 50 `personIds` with one verdict and an optional
-shared comment, judges each lead on its own in order, and reports per person what happened (an
-unknown id fails only its own item). `lead_feedback_withdraw`
-takes the connecting member's verdict back and restores a rejected lead: it goes back to
-`qualified` for everyone and every `down` on it is removed — nothing to undo is a no-op.
+Standalone approval is retired. A good lead stays in To review until the user asks to add it to a sequence; saying "these look good" does not authorize outreach. Never send `up` to a feedback tool. Use the campaign preparation and add tools only for an explicit request to contact the selected people.
 
-A lead whose `stage` is `needs_review` is a weak match a run parked for a human: it is not
-counted, delivered, or enrollable until someone decides. When the user has looked at it and wants
-it in, an `up` through `lead_feedback_submit` promotes it, or `lead_promote_from_review` with its
-lead id moves it to `qualified` without recording a judgment; any other stage is refused with
-the current stage named. `lead_disqualify` is the explicit removal (it takes the
-lead's `personId` and its exact `version` from `leads_get`, and stops live outreach at that lead)
-— always confirm first; `lead_feedback_withdraw` restores the lead, but not its outreach.
+Only call `lead_feedback_submit` when the user asks to reject a lead. It takes the lead's `personId`, `verdict: "down"`, and an optional comment. The rejection teaches the Brain, moves the lead to Rejected for every member, and stops any live outreach at it. For an explicit batch rejection, `lead_feedback_submit_bulk` takes up to 50 `personIds`, `verdict: "down"`, and an optional shared comment; an unknown id fails only its own item.
+
+`lead_feedback_withdraw` takes back the connecting member's verdict, including an old approval. Historical positive verdicts remain readable but no longer hide leads: a lead in no sequence and not otherwise set aside stays in To review. Withdrawing also restores a rejected lead to `qualified` for everyone and removes every `down` on it; stopped outreach stays stopped. Nothing to undo is a no-op.
+
+A lead whose `stage` is `needs_review` is a weak match shown with the other leads but not yet enrollable. When the user explicitly decides it is a fit, `lead_promote_from_review` with its lead id moves it to `qualified` without recording an approval or removing it from To review. Any other stage is refused. `lead_disqualify` is the explicit removal without a verdict (it takes the lead's `personId` and exact `version` from `leads_get`, and stops live outreach) — always confirm first; `lead_feedback_withdraw` restores the lead, but not its outreach.
 
 ## Signal settings
 
