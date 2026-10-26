@@ -183,6 +183,12 @@ the remedy) and `activeRun` — the run already queued or running for that Play,
   proposal asks a clarification, ask it and call `plays_plan` again with the answer.
 - Create new Plays with `plays_create_from_ask`, using the member's words, lead cap and recurrence choice.
   If it is unavailable, search creation is temporarily unavailable: never fall back to legacy creation.
+- When the member names competitor companies (a name, a website or a LinkedIn page), call
+  `plays_resolve_competitors` once with all of them before creating, and pass each company it
+  resolved in `competitors` as it answered (`use`: watch its LinkedIn posts, or exclude its
+  people). For an ambiguous one ask one question naming each candidate by its name and website;
+  for an unknown one ask once for its website or LinkedIn page. Never guess a LinkedIn address
+  from a name. A person's profile is an author and a post is one post: keep those links in `ask`.
 - `plays_update` replaces the complete name, pipeline, and input under the exact `revision` from
   `plays_get`. Preserve fields the user did not ask to change. `plays_delete` archives a Play
   under the same revision rule; its history and Lead attribution remain. Main cannot be archived.
@@ -263,14 +269,22 @@ ledger charged the run and its waterfall hops — `null` when the ledger never s
 made-up zero — plus the document's spend in credits and the chain envelope), `rejections` (counts
 per reason with a plain-language `meaning`, and up to ten named examples), `stopped` (why it
 ended: `budget`, `deadline`, `lead_limit`, `sources_dry`, `error`, `cancelled`,
-`judge_unavailable`, or `gate` — a measurement gate parked the run at a pivot because the
-envelope could not afford the next step — and where that came from), `chain` (the waterfall's hops and the stage's decision), `origin`, and `advice`
+`judge_unavailable`, `gate` — a measurement gate parked the run at a pivot because the
+envelope could not afford the next step — and, for a search Pancake writes, `source_unreadable`,
+`collection_limit` or `recently_refreshed`, below — and where that came from), `chain` (the waterfall's hops and the stage's decision), `origin`, and `advice`
 — deterministic next steps: a wall of hard vetoes means the sources are off (review signal
 settings, keywords, competitors); a wall of low ICP scores means the bar is high (review the ICP
 in the Brain or accept `needs_review` leads); enrichment or judge failures mean a provider issue
 (retry later); a budget stop says the spend per lead and what the remainder would cost; dry
 sources name the signal with the best recent feedback. An empty `advice` means the run met its
-target. Read `advice` before proposing another run. `include: 'decisions'` returns the run's
+target. A search Pancake writes says why it stopped short from its sources, the first that
+applies: `budget`; `source_unreadable` (a source could not be read: a LinkedIn post or page the
+member gave may be private or deleted, and `advice` says when to ask them for a public link);
+`collection_limit` (it read the most one search reads at once, or LinkedIn held it back for now:
+more may match on a later search); `recently_refreshed` (it read no new LinkedIn posts because
+they had been read within the refresh interval). None of these is running out of people: such a
+search reads `sources_dry` only when every source was read to its end or up to now, and
+`stopped.reason` is `null` when nothing it recorded says why. Read `advice` before proposing another run. `include: 'decisions'` returns the run's
 per-candidate verdicts, vetoes, and drops from its trail (page with `afterSeq`; size with
 `decisionsLimit`, up to 200 — `limit` is the people page, up to 50) — also for a
 failed run, which has no result document.
