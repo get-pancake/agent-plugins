@@ -232,8 +232,8 @@ search. Take each paid or activating step only when the member asks.
 
 ## Lead-finding runs
 
-Pancake's scheduler runs the nightly waterfall on its own. This surface can also start work on
-demand, and the unit is CREDITS: a search reserves credits when it starts (up to its cap), is
+To find leads, run a Play with `plays_run` (see Saved Plays above). The unit is CREDITS: a
+search reserves credits when it starts (up to its cap), is
 charged what its research actually cost — in credits, summed over the search and rounded down —
 and the rest of the reservation comes back; a work email found costs 50, a phone number found
 costs 500, and a lookup that finds none is free. Creating, editing and testing a Play cost nothing. An estimate or
@@ -245,22 +245,11 @@ today and concurrently. For what each run cost — call `credits_get_balance`: i
 balance, the current cycle (trial, monthly package, or operator plan), what the next renewal keeps
 and expires, the prices, and the latest ledger movements, each naming its search, email lookup
 or phone lookup and Play. Buying credits or changing the package is a member's action in
-Settings › Billing; there is no tool for it. Then `lead_finding_preview_plan` with a credit envelope (and optionally a lead target,
-a scope — the full waterfall or one pipeline — or an explicit split) to see how the credits would
-be spread across post-watchlist, post-keyword, company-stack, company-hiring, and persona-sweep, the
-new people and leads each stage is expected to find with its `creditRange` and `assumptions`
-(a `basis` labeled `seededFrom` borrowed a retired merged pipeline's history while the split
-pipelines are young; scopes `post_engagement` and `company_signal` are themselves retired and
-refused — name the split pipelines instead), and what the balance lets through (`runnable`;
-`reason` is `balance` or `floor` when it is less); it is free. Omit `credits` to size each stage
-at its estimate for the target.
-A plan runs the Main Play's saved targeting exactly as its nightly runs do — each stage's own who
-and sources, Main's stage order and target; `targeting` shows them with Main's revision. A
-`target` or `geographies` you pass replaces Main's for that plan only; what you omit stays Main's. Confirm the credits
-with the user, then `lead_finding_start_plan` with the same arguments; it returns the head run id
-at once. Poll `lead_finding_get_run` every minute or two until status is `published` or
+Settings › Billing; there is no tool for it. Confirm the credits
+with the user, then `plays_run`; it returns the run id at once. Poll `lead_finding_get_run`
+every minute or two until status is `published` or
 `failed` — `pending` and `running` both mean wait, never that something is stuck — and never
-start a second plan while one is in flight. `lead_finding_cancel_run` stops a run and keeps the
+start a second search of the same Play while one is in flight. `lead_finding_cancel_run` stops a run and keeps the
 leads it already found. `lead_finding_list_runs` reviews recent runs (a waterfall's stages share a
 `chainId`) with each run's lead count, stop reason, credits charged, and origin;
 `lead_finding_get_run` reads counts, spend and drop ledgers, and a bounded page of people.
@@ -359,9 +348,9 @@ The Pancake plugins ship four ready-made playbooks as skills beside this one, ea
 of the tools above with the spend stated before anything is spent and a closing "what the human
 should look at":
 
-- `pancake-daily-leads` — find N leads today under X credits: credits and run limits →
-  `lead_finding_preview_plan` → confirm → `lead_finding_start_plan` → poll → report the leads,
-  what was rejected and why, and what it cost.
+- `pancake-daily-leads` — find N leads today under X credits: credits → the Play to run
+  (`plays_list`, `plays_get`) → confirm → `plays_run` → poll → report the leads, what was
+  rejected and why, and what it cost.
 - `pancake-review-leads` — review last night's leads: `activity_since` from a cursor YOU keep
   per workspace id (first run: the last 24 hours) → judge each new lead (feedback, promote,
   disqualify) → report what changed.

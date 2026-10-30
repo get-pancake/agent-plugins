@@ -1,17 +1,17 @@
 ---
 name: pancake-daily-leads
-description: "Playbook: find N leads today in a Pancake workspace under a stated credit limit — read the credits, preview the plan, confirm, start it, poll, and report what was found and rejected."
+description: "Playbook: find N leads today in a Pancake workspace under a stated credit limit — read the credits, choose the Play, confirm, run it, poll, and report what was found and rejected."
 ---
 
 # Find N leads a day under X credits
 
 Use this playbook when the user asks for leads today under a budget — "find me 10 leads for
-under 3,000 credits", "run lead finding, keep it under 2k". It runs the same waterfall Pancake's
-scheduler runs overnight, on demand, and never spends more than the number the user agreed to.
+under 3,000 credits", "run lead finding, keep it under 2k". It runs one of the workspace's saved
+Plays now with `plays_run`, and never spends more than the number the user agreed to.
 It needs the `pancake` skill's conventions and a connected workspace; every step is an MCP tool
 call and nothing here needs the Pancake app.
 
-Inputs: **N** (leads to aim for, 1–50; default 10) and **X** (the credit envelope). Only a new
+Inputs: **N** (new leads to aim for; default 10) and **X** (the credit limit). Only a new
 lead in stage `qualified` (a strong match) counts toward N: a person who
 was already a lead, and a lead that waits for review (`needs_review`), do not count.
 If the user gave only one, ask for the other before spending anything.
@@ -23,68 +23,62 @@ If the user gave only one, ask for the other before spending anything.
    end), the fixed `prices` (a work email found), and `enforcement`. A search has no fixed price:
    it reserves credits when it starts and is charged its actual research cost, 1,000 credits per
    $1 rounded down, whatever it finds.
-2. `lead_finding_get_spend` — `balance`, `startable` (under `enforce`, the credits a start may
-   reserve right now), and `limits.startsRemainingToday` / `concurrentRemaining`.
-3. `lead_finding_list_runs` with `{"limit": 5}` — if any run is `pending` or `running`, stop here:
-   never start a second plan while one is in flight. Tell the user which run is running and offer
-   to poll it instead.
+2. `lead_finding_get_spend` — `balance` and `startable` (under `enforce`, the credits a start may
+   reserve right now).
 
 Decide the credits you will ask for, `E = min(X, startable.credits)` when `startable` is set, else
-`E = X`. E is the most the plan may reserve and the most it can be charged; it is charged only the
-research it actually does. In `enforce` the balance binds: a run whose research reaches its cap
+`E = X`. E is the most the search may reserve and the most it can be charged; it is charged only
+the research it actually does. In `enforce` the balance binds: a run whose research reaches its cap
 stops and publishes what it found. If `enforcement` is `off`, credits are recorded but not charged
 on this deployment: say so, and treat X as the only rail.
 
-If `startsRemainingToday` is 0, report it and stop. If the balance cannot cover the least a search
-reserves, say so and point the user at Settings › Billing (a new monthly cycle or a larger
-package); paying stays with a person.
+If the balance cannot cover the least a search reserves, say so and point the user at Settings ›
+Billing (a new monthly cycle or a larger package); paying stays with a person.
 
-## 2. Preview the plan — free
+## 2. Choose the Play — free
 
-`lead_finding_preview_plan` with `{"credits": E, "target": N}` (add `geographies` or a `scope`
-only if the user asked for them). Read back:
-
-- `stages` — for post-watchlist, post-keyword, company-stack, company-hiring, and persona-sweep: the
-  credits `planned` (what the stage reserves: the most it may cost), the `expectedLeads`
-  (p25/p50/p80, an estimate, never a promise), and a `basis` saying whether the estimate comes from
-  this workspace's own runs or a fleet aggregate (a basis labeled `seededFrom` borrowed a retired
-  merged pipeline's history while the split pipelines are young); a stage with
-  `skipped: "target_met"` gets nothing. `expectedLeadsTotal` and `unallocatedCredits` sum it up.
-- `runnable.credits` — what the balance lets through (with a `reason` — `balance` or `floor` —
-  when it is less than you asked). Use it, not the raw balance.
-- `nextStep`, and anything else it warns about (an unusable Brain, missing signals).
-
-If the expected leads fall clearly short of N, say so and offer either a larger E (never above X)
-or a smaller N. Do not silently raise the envelope.
+1. `plays_list` — the workspace's Plays. Use the Play the user named. If there are several and
+   they named none, ask which one. Never create a Play here: `plays_create_from_ask` is for when
+   the user asks for a new Play.
+2. `plays_get` with its `playId`, and check it before anything is spent:
+   - `search` — Pancake writes the Play's search. A Play whose `search` is `null` uses the older
+     kind of search, which Pancake no longer runs: say so and offer to create a new Play. When
+     `search.progress` says the search is not ready yet, tell the user where it stands and stop.
+   - `readiness` — when it is `blocked`, quote `readiness.memberRemedy` and stop.
+   - `activeRunKnown` must be `true` and `activeRun` must be `null`. If a run is queued or running,
+     never start a second one: tell the user which run is running and offer to poll it with
+     `lead_finding_get_run` instead.
+   - `search.freshness` — while `nextRefreshAt` is ahead, tell the user when the search was last
+     refreshed and that a new search may return mostly the same people. Send `refresh: true` only if
+     they ask to refresh anyway.
 
 ## 3. State the spend and get a yes
 
 Before starting, tell the user in one message:
 
-> I will start a `<scope>` plan aiming for **N leads** with an envelope of **E credits**
-> (planned: post-watchlist A / post-keyword B / company-stack C / company-hiring D /
-> persona-sweep F). Expected leads ≈ L (p50).
-> Enforcement is `<mode>`; the workspace has V credits available this cycle. The plan reserves at
+> I will run the Play **<name>**, looking for **N new leads**, with a limit of **E credits**.
+> Enforcement is `<mode>`; the workspace has V credits available this cycle. The search reserves at
 > most E and is charged only the research it actually does, rounded down. Nothing has been spent
 > yet. Start it?
 
-Wait for an explicit yes. A previous confirmation for a different envelope does not carry over.
+Wait for an explicit yes. A previous confirmation for a different limit does not carry over.
 
-## 4. Start and poll
+## 4. Run and poll
 
-`lead_finding_start_plan` with exactly the arguments the user confirmed. It returns the head
-`runId` at once. Then `lead_finding_get_run` with that `runId` every 1–2 minutes until `status`
-is `published` or `failed` — `pending` and `running` both mean wait, never that something is
-stuck. A waterfall runs its stages one after another under the same envelope; the head run's
-`report.chain` names the hops. Do not start anything else meanwhile. If the user asks to stop,
-`lead_finding_cancel_run` keeps the leads found so far.
+`plays_run` with `{"playId": "<id>", "credits": E, "target": N}`, exactly as the user confirmed.
+It returns the `runId` at once. Then `lead_finding_get_run` with that `runId` every 1–2 minutes
+until `status` is `published` or `failed` — `pending` and `running` both mean wait, never that
+something is stuck. The search can take more than one run to find N: `plays_get`'s
+`search.request` says how far it is ("21 of 50 new leads found — still searching"), and
+`lead_finding_list_runs` with the `playId` lists its runs. Do not start anything else meanwhile. If
+the user asks to stop, `plays_cancel_search` stops the search and keeps the leads found so far.
 
 ## 5. Report the result
 
 From the final `lead_finding_get_run` (add `include: "rejected"` for the retired people):
 
-1. **Found**: how many leads the run put in stage `qualified` (a strong match) against N, and
-   the first page of people — name, title, company, `fit`, and the signal that surfaced them.
+1. **Found**: the run's `leadCount` (the new leads it gave the Play) against N, and the Play's
+   newest leads from `leads_list` with its `playId` — name, title, company, `fit`, and why they fit.
 2. **Spent**: `report.credits` — what the ledger charged the run and its hops for their research,
    against E (`documentSpend` is what the run's own record says its research cost). Say plainly
    whether it stayed inside E (it must; if the ledger shows more, report that as a discrepancy
