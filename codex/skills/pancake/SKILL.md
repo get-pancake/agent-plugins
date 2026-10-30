@@ -228,7 +228,8 @@ pipeline input. Read them with `plays_get_search`, preview a change with
 in use keeps running: a compatible change then needs a sample and a structural one a new search
 (`plays_prepare_search`; writing and checking a search cost no credits, only the searches it
 then runs do); `plays_confirm_search` samples, then uses, exactly the candidate you read. `plays_list_search_history` and `plays_restore_search` bring back a past
-search. Take each paid or activating step only when the member asks.
+search, and `plays_undo_improvement` undoes one change Pancake made from members' feedback (a
+version with `improvement`). Take each paid or activating step only when the member asks.
 
 ## Lead-finding runs
 
