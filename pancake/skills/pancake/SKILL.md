@@ -338,6 +338,8 @@ the user asks:
 - `billing_get` — plan, status, the access decision, and — when credits are sold — the credit
   package, its monthly credits and the LinkedIn licences. Use it to explain a refusal (a seat, a
   run, a feature); changing the package, checkout, and the billing portal stay in the browser.
+  A member who wants to cancel the plan does it in the app: send them to Settings › Billing, where
+  Cancel plan is. No tool cancels it.
 
 Nothing here spends credits. Anything that grants access, handles a credential, or pays — approving
 clients, accepting invitations, connecting Slack, checkout, creating or deleting the workspace — is
