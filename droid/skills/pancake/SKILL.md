@@ -300,6 +300,7 @@ exactly what to do and poll it every minute or two.
 ## When lead finding runs
 
 Choose each Play's recurrence with `plays_set_schedule`, after the member approves it.
+When the member asks for a Play's new leads to start its sequence without a review, turn it on with `plays_set_auto_enroll`: each later search's new leads then start real outreach. It is off by default.
 `lead_finding_schedule_get` reads a historical workspace schedule (`daily`, `weekdays`,
 `weekly`, `days`, `off` or `agent`). `lead_finding_schedule_set` can only turn it
 `off`; other modes are refused without changing the saved cadence or tuning. Read the Play
