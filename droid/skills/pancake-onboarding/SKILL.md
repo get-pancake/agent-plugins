@@ -2,7 +2,7 @@
 name: pancake-onboarding
 description: "Playbook: finish a paid founder's Pancake welcome here — read the welcome and Brain, ask only what is missing, confirm one first Play, create it once, show real progress, offer a tour."
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
 ---
 
 # Create the founder's first Play in their AI app
@@ -87,7 +87,9 @@ Then ask only what is still missing, usually two to four questions, one at a tim
 Brain or their words already answer them:
 
 - who exactly to find, and the immediate goal;
-- people or companies;
+- whom to contact, when they pick companies (by what they do, or a list): every Play finds
+  people, so offer the Brain's buyer roles, and use them when they name no one. Never offer
+  a Play that finds only companies;
 - the places, company sizes, technologies or signals that matter, and what must be excluded;
 - how many new leads one search keeps, only when they care (otherwise Pancake's default of 10);
 - how often Pancake searches: once, every day, or every week on a day they name. Never choose it
@@ -99,7 +101,8 @@ number) with their words in `targetWords`; what they excluded goes in `exclusion
 
 Save the brief after each answer that changes it. It is the checkpoint a new chat resumes:
 `postboarding_advance` with `{"expectedRevision", "move": {"kind": "save_brief", "brief":
-{"playName", "ask", "turns", "outputEntity", "target", "targetWords", "exclusions", "launch"}}}`.
+{"playName", "ask", "turns", "outputEntity", "target", "targetWords", "exclusions", "launch"}}}`,
+with `outputEntity` always `"person"`.
 `launch` stays `null` until they answered how often and whether the first search runs now:
 `{"firstSearch": true | false, "recurrence": {"frequency": "once"} | {"frequency": "daily"} |
 {"frequency": "weekly", "weekday": 0–6 (0 is Sunday)}, "recurrenceWords": <their words or null>}`.
